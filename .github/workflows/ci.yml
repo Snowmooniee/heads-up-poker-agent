@@ -36,6 +36,12 @@ jobs:
       - name: Run tests
         run: python -m pytest tests/ -v
 
+      - name: Check poker import
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
+        run: |
+          python -m pip install pokerkit==0.7.7
+          python -m scripts.check_poker_import
+
       - name: Compile
         run: python -m compileall -q corecoder tests
 

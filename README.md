@@ -27,4 +27,14 @@ The match command writes both hands to one `.phhs` file.
 
 The replay prints a flop and river decision for each hand. Each decision contains the public cards at that point and the acting player's hole cards. The match ends when the opponent reaches zero chips.
 
+Read an existing `.phh` or `.phhs` file to index its recorded decisions.
+
+```powershell
+.\.venv\Scripts\python.exe -m scripts.poker_import .poker-agent/two-hands.phhs
+```
+
+The JSON uses the SHA-256 of the file contents as `source_id`. A `hand_id` adds the hand number, and a `decision_id` adds the PHH action number. Each decision includes the recorded action and a snapshot from before that action. The `players` mapping gives the player name for each PHH seat (`p1` or `p2`).
+
+Run the import check with `python -m scripts.check_poker_import` in the project environment.
+
 The demo uses [PokerKit's PHH reader](https://pokerkit.readthedocs.io/en/stable/notation.html). The project retains the original [CoreCoder history and documentation](https://github.com/he-yufeng/CoreCoder/tree/bd64cfe7ad2789fa0ab1b3a689ad160567b5cdb0) and [MIT license](LICENSE).
