@@ -1,3 +1,17 @@
+# Local planning, learning records, source material and credentials.
+/.private/
+/PROJECT.md
+/MVP.md
+/LEARNING.md
+/reports/
+/raw/
+.env
+.env.*
+!.env.example
+
+# Local environments and generated run data.
+.venv/
+venv/
 __pycache__/
 *.py[cod]
 *$py.class
@@ -6,12 +20,12 @@ dist/
 build/
 .eggs/
 *.egg
-.env
-.venv/
-venv/
 .mypy_cache/
 .ruff_cache/
 .corecoder_history
 .DS_Store
 .pytest_cache/
 .tmp/
+/.poker-agent/
+*.sqlite3
+*.sqlite3-*
