@@ -24,10 +24,7 @@ def test_version():
     assert __version__ == m.group(1)
 
 
-def test_readme_line_counts_are_current():
-    # The LoC numbers are the brand of this repo. If the engine or the
-    # package grows, the README has to move with it, and this test is the
-    # alarm: update the badge and the prose in README.md and README_CN.md.
+def test_corecoder_readme_line_counts_are_current():
     root = Path(__file__).resolve().parent.parent
     engine_files = [
         root / "corecoder" / name
@@ -49,11 +46,11 @@ def test_readme_line_counts_are_current():
     )
     package_net = sum(net_lines(f) for f in package_files)
 
-    readme = (root / "README.md").read_text(encoding="utf-8")
+    readme = (root / "README_CN.md").read_text(encoding="utf-8")
     assert f"engine-{engine}_LoC" in readme
-    assert f"{len(package_files)} files" in readme
-    assert f"{physical:,} physical lines" in readme
-    assert f"{package_net:,} net" in readme
+    assert f"{len(package_files)} 个文件" in readme
+    assert f"物理 {physical} 行" in readme
+    assert f"净 {package_net} 行" in readme
 
 
 def test_doc_python_line_references_are_current():
