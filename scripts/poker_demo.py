@@ -19,9 +19,9 @@ def stacks(state, players):
     return dict(zip(players, state.stacks))
 
 
-def decision_snapshot(state, players):
+def decision_snapshot(state, players, *, include_uncalled=False):
     actor = state.actor_index
-    return {
+    snapshot = {
         "actor": players[actor],
         "board": [repr(card) for card in state.get_board_cards(0)],
         "hole_cards": [repr(card) for card in state.hole_cards[actor]],
@@ -29,6 +29,11 @@ def decision_snapshot(state, players):
         "to_call": state.checking_or_calling_amount,
         "stacks": stacks(state, players),
     }
+    if include_uncalled and snapshot["to_call"]:
+        excess = max(state.bets) - state.bets[actor] - snapshot["to_call"]
+        if excess:
+            snapshot["uncalled_excess"] = excess
+    return snapshot
 
 
 def hand_result(state, players, decisions):

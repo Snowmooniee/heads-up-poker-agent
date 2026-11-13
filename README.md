@@ -55,6 +55,14 @@ $riverCalls = .\.venv\Scripts\python.exe -m scripts.poker_query $reviewDb --stre
 
 The import reports 2 hands and 18 decisions. The saved snapshot for the first call shows a pot of 36 and a call amount of 12. The file queries open SQLite in read-only mode. Reimporting the same hand history keeps one record per ID.
 
+Calculate exact river equity and call EV for the saved decision with an equal-weight opponent range:
+
+```powershell
+.\.venv\Scripts\python.exe -m scripts.poker_equity $reviewDb $riverCalls[0].decision_id 'KcKd 9c9d'
+```
+
+The first decision has two compatible combinations. The player wins against one and loses against the other, for equity of `1/2` and call EV of `12` chips. The calculation uses a heads-up, rake-free pot. Each compatible combination has equal weight and ties split the pot.
+
 Run the import, query, and saved snapshot checks with `python -m scripts.check_poker_import` in the project environment.
 
 The demo uses [PokerKit's PHH reader](https://pokerkit.readthedocs.io/en/stable/notation.html). The project retains the original [CoreCoder history and documentation](https://github.com/he-yufeng/CoreCoder/tree/bd64cfe7ad2789fa0ab1b3a689ad160567b5cdb0) and [MIT license](LICENSE).

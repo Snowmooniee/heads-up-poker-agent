@@ -4,8 +4,11 @@ from contextlib import closing
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
+from pokerkit import HandHistory
+
 from .poker_demo import run_demo
-from .poker_import import read_history
+from .poker_equity import river_call
+from .poker_import import normalize_hand, read_history
 from .poker_query import find_decisions, get_snapshot, open_saved_database, query_history, save_history
 
 
@@ -43,10 +46,10 @@ def main():
     assert [entry["action_no"] for entry in first["decisions"]] == [3, 4, 6, 7, 8, 10, 11, 13, 14]
     assert first["decisions"][2]["action"] == "check"
     assert first["decisions"][2]["snapshot"]["board"] == ["2c", "7d", "9h"]
-    river_call = first["decisions"][-1]
-    assert (river_call["street"], river_call["action"]) == ("river", "call")
-    assert river_call["decision_id"] == f"{first['hand_id']}:14"
-    assert river_call["snapshot"] == {
+    first_call = first["decisions"][-1]
+    assert (first_call["street"], first_call["action"]) == ("river", "call")
+    assert first_call["decision_id"] == f"{first['hand_id']}:14"
+    assert first_call["snapshot"] == {
         "actor": "p2",
         "board": ["2c", "7d", "9h", "Jc", "3s"],
         "hole_cards": ["As", "Ah"],
@@ -54,13 +57,27 @@ def main():
         "to_call": 12,
         "stacks": {"p1": 76, "p2": 88},
     }
-    assert one_hand["hands"][0]["decisions"][-1]["snapshot"] == river_call["snapshot"]
+    assert one_hand["hands"][0]["decisions"][-1]["snapshot"] == first_call["snapshot"]
     assert second["decisions"][-1]["snapshot"]["to_call"] == 64
     assert [row["decision_id"] for row in river_calls] == [f"{first['hand_id']}:14", f"{second['hand_id']}:14"]
-    assert river_calls[0]["snapshot"] == river_call["snapshot"]
+    assert river_calls[0]["snapshot"] == first_call["snapshot"]
     assert [row["snapshot"]["to_call"] for row in river_calls] == [12, 64]
     assert [(row["hand_no"], row["action_no"]) for row in turn_checks] == [(1, 10), (1, 11), (2, 10), (2, 11)]
-    print("PHH import, SQLite query, and saved snapshot checks passed.")
+    snapshot = first_call["snapshot"]
+    mixed = river_call(snapshot, "KcKd 9c9d AsKd")
+    assert (mixed["wins"], mixed["losses"], mixed["blocked"], mixed["equity"], mixed["call_ev"]) == (1, 1, 1, "1/2", "12")
+    assert river_call(snapshot, "9c9d")["call_ev"] == "-12"
+    assert river_call(snapshot, "KcKd")["call_ev"] == "36"
+    short = HandHistory(
+        variant="NT", antes=[0, 0], blinds_or_straddles=[1, 2], min_bet=2, starting_stacks=[100, 22],
+        actions=[row["phh"] for row in first["actions"][:12]] + ["p1 cbr 76", "p2 cc"],
+    )
+    short_snapshot = normalize_hand(short, "short", 1)["decisions"][-1]["snapshot"]
+    assert (short_snapshot["pot"], short_snapshot["to_call"], short_snapshot["uncalled_excess"]) == (100, 10, 66)
+    assert river_call(short_snapshot, "KcKd")["call_ev"] == "34"
+    tied = river_call({"board": ["As", "Ks", "Qs", "Js", "Ts"], "hole_cards": ["2c", "3d"], "pot": 30, "to_call": 10}, "4c5d")
+    assert (tied["ties"], tied["equity"], tied["call_ev"]) == (1, "1/2", "10")
+    print("PHH import, SQLite, and exact river checks passed.")
 
 
 if __name__ == "__main__":

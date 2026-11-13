@@ -42,7 +42,8 @@ def normalize_hand(hand, source_id, hand_no):
         # The next iteration advances this state in place.
         before = None
         if state.actor_index is not None:
-            before = STREETS[state.street_index], decision_snapshot(state, SEATS)
+            street = STREETS[state.street_index]
+            before = street, decision_snapshot(state, SEATS, include_uncalled=street == "river")
 
     return {
         "hand_id": hand_id,
