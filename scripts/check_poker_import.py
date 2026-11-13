@@ -1,11 +1,12 @@
 """Verify PHH imports and SQLite queries against known decisions."""
 
+from contextlib import closing
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
 from .poker_demo import run_demo
 from .poker_import import read_history
-from .poker_query import query_history
+from .poker_query import find_decisions, get_snapshot, open_saved_database, query_history, save_history
 
 
 def main():
@@ -19,6 +20,14 @@ def main():
         two_hands = read_history(match)
         river_calls = query_history(match, "river", "call")
         turn_checks = query_history(match, "turn", "check")
+        database = root / "review history.sqlite3"
+        imported = save_history(match, database)
+        assert (imported["hands"], imported["decisions"]) == (2, 18)
+        save_history(match, database)
+        with closing(open_saved_database(database)) as saved:
+            assert find_decisions(saved, "river", "call") == river_calls
+            decision_id = river_calls[0]["decision_id"]
+            assert get_snapshot(saved, decision_id) == river_calls[0]["snapshot"]
         renamed = root / "renamed.phhs"
         renamed.write_bytes(match.read_bytes())
         assert read_history(renamed) == two_hands
@@ -51,7 +60,7 @@ def main():
     assert river_calls[0]["snapshot"] == river_call["snapshot"]
     assert [row["snapshot"]["to_call"] for row in river_calls] == [12, 64]
     assert [(row["hand_no"], row["action_no"]) for row in turn_checks] == [(1, 10), (1, 11), (2, 10), (2, 11)]
-    print("PHH and PHHS import and SQLite query checks passed.")
+    print("PHH import, SQLite query, and saved snapshot checks passed.")
 
 
 if __name__ == "__main__":

@@ -41,6 +41,20 @@ The query command loads the hand and decision records into an in-memory SQLite d
 .\.venv\Scripts\python.exe -m scripts.poker_query .poker-agent/two-hands.phhs --street river --action call
 ```
 
-The two-hand example returns action 14 from each hand, with call amounts of 12 and 64. Run the import and query checks with `python -m scripts.check_poker_import` in the project environment.
+The two-hand example returns action 14 from each hand, with call amounts of 12 and 64.
+
+Save the same hand histories to a SQLite file, query the file, then retrieve the first decision's snapshot by ID.
+
+```powershell
+$historyFile = '.poker-agent/two-hands.phhs'
+$reviewDb = '.poker-agent/review.sqlite3'
+.\.venv\Scripts\python.exe -m scripts.poker_query $historyFile --save-to $reviewDb
+$riverCalls = .\.venv\Scripts\python.exe -m scripts.poker_query $reviewDb --street river --action call | ConvertFrom-Json
+.\.venv\Scripts\python.exe -m scripts.poker_query $reviewDb --decision-id $riverCalls[0].decision_id
+```
+
+The import reports 2 hands and 18 decisions. The saved snapshot for the first call shows a pot of 36 and a call amount of 12. The file queries open SQLite in read-only mode. Reimporting the same hand history keeps one record per ID.
+
+Run the import, query, and saved snapshot checks with `python -m scripts.check_poker_import` in the project environment.
 
 The demo uses [PokerKit's PHH reader](https://pokerkit.readthedocs.io/en/stable/notation.html). The project retains the original [CoreCoder history and documentation](https://github.com/he-yufeng/CoreCoder/tree/bd64cfe7ad2789fa0ab1b3a689ad160567b5cdb0) and [MIT license](LICENSE).
