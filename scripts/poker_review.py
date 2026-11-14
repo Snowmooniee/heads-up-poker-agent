@@ -25,6 +25,7 @@ MAX_ROUNDS = 4
 MAX_INPUT_BYTES = 16000
 MAX_OUTPUT_TOKENS = 512
 STATUSES = {"reviewed", "needs_range", "no_match", "ambiguous", "invalid_range", "needs_import", "needs_cards"}
+REPORT_FIELDS = ("status", "decision_id", "equity", "call_ev", "recommendation", "explanation")
 REPORT = """Review a recorded heads-up river call using the supplied selector and equal-weight opponent range.
 If the range is absent, ask for it. If there are zero matches, report no_match. If there are multiple matches, ask for the decision ID.
 If the calculation returns a status and explanation instead of a result, use that status and explain the issue.
@@ -201,7 +202,8 @@ def parse_report(raw, events, with_tools):
     if not isinstance(report, dict) or report.get("status") not in STATUSES:
         raise ValueError("The report is missing a supported status.")
     if not isinstance(report.get("explanation"), str) or not report["explanation"].strip():
-        raise ValueError("The report is missing a supported status or explanation.")
+        raise ValueError("The report is missing an explanation.")
+    report = {field: report[field] for field in REPORT_FIELDS}
     if report["status"] == "reviewed":
         equity, ev = Fraction(report["equity"]), Fraction(report["call_ev"])
         choice = "call" if ev > 0 else "fold" if ev < 0 else "indifferent"
@@ -218,6 +220,11 @@ def parse_report(raw, events, with_tools):
                     and Fraction(item["equity"]) == equity and Fraction(item["call_ev"]) == ev
                 ):
                     report["evidence"] = {"call_id": call_id, **item}
+                    report["explanation"] = (
+                        f"Of {item['combos']} compatible combinations, the player wins against {item['wins']}, "
+                        f"ties against {item['ties']}, and loses against {item['losses']}. "
+                        f"Calling is worth {item['call_ev']} chips relative to folding."
+                    )
                     break
             else:
                 raise ValueError("The decision and values must match the calculation tool result.")

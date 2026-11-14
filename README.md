@@ -20,16 +20,16 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m scripts.poker_eval .poker-agent/demo
 ~~~
 
-Open [the saved comparison](benchmarks/river/run-2026-11-14/README.md) for the DeepSeek results and traces. The offline demo uses scripted model responses to exercise CoreCoder's tool loop. It generates seven checked cases, including a report and trace at a path such as .poker-agent/demo/offline/mixed-range/. Each evaluation run takes a new output directory. The Ubuntu CI run publishes the reports, traces, and checks as the poker-review artifact.
+Open the [example review](benchmarks/river/run-2026-11-14/agent/mixed-range/report.md) and the [DeepSeek comparison](benchmarks/river/run-2026-11-14/README.md). The offline demo uses scripted model responses to exercise CoreCoder's tool loop. It generates seven checked cases, including a report and trace under `.poker-agent/demo/offline/mixed-range/`. Each evaluation run takes a new output directory. The Ubuntu CI run publishes the reports, traces, and checks as the `poker-review` artifact.
 
 ~~~sh
 .venv/bin/python -m scripts.poker_query benchmarks/river/decisions.phhs --save-to .poker-agent/review.sqlite3
 .venv/bin/python -m scripts.poker_review .poker-agent/review.sqlite3 --hand 1 --range 'KcKd 9c9d' --output .poker-agent/review
 ~~~
 
-The selector accepts a hand number or the full decision ID. The review connects to SQLite in read-only mode. Its tools receive the selected decision's public board, acting player's cards, pot and call cost. The exact tool result, including the matched call ID, appears in report.md. Trace.json contains request messages, tool arguments, results, timings and model usage. Reproduce the tool and data checks with python -m scripts.check_poker_review.
+The selector accepts a hand number or the full decision ID. The review connects to SQLite in read-only mode. Its tools receive the selected decision's public board, acting player's cards, pot and call cost. The tool evidence and matched call ID appear in `report.md`. The `trace.json` file contains request messages, tool arguments, results, timings and model usage. Reproduce the tool and data checks with `python -m scripts.check_poker_review`.
 
-Set DEEPSEEK_API_KEY in the local environment and add --live to the review command to use DeepSeek Flash. Evaluation supports --mode compare and repeated --task arguments to select the cases.
+Set `DEEPSEEK_API_KEY` in the local environment and add `--live` to the review command to use DeepSeek Flash. Evaluation supports `--mode compare` and repeated `--task` arguments to select the cases.
 
 ## Generate and inspect hand histories
 

@@ -1,6 +1,6 @@
 # DeepSeek Flash river review comparison
 
-On 2026-11-14, DeepSeek Flash reviewed five synthetic river decisions once per mode. The agent selected its query and calculator calls through CoreCoder. The direct mode received the same candidate snapshot and range in its input. Both used non-thinking mode, the same 512-token output cap per request, and the same reference answers. The agent had a maximum of four requests per case. Direct mode used one request per case.
+On 2026-11-14, DeepSeek Flash ran five synthetic review tasks across four river decisions, once per mode. The agent selected its query and calculator calls through CoreCoder. The direct mode received the same candidate snapshot and range in its input. Both used non-thinking mode, the same 512-token output cap per request, and the same reference answers. The agent had a maximum of four requests per case. Direct mode used one request per case.
 
 | Mode | Structured checks | Structured checks and explanation review | Tool calls | API requests | Input and output tokens | Median time | Estimated USD |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -17,6 +17,6 @@ The structured score requires the reference status, decision, equity, call EV an
 | Blocked break-even | Correct final EV of zero, but the explanation gave both 36 and 48 for the contested pot. [Trace](agent/blocked-break-even/trace.json) | Response at the 512-token cap contained incomplete JSON. [Trace](direct/blocked-break-even/trace.json) |
 | Fully blocked | Asked for a range compatible with the visible cards. [Trace](agent/fully-blocked/trace.json) | Identified the blocked hand but returned a recommendation. [Trace](direct/fully-blocked/trace.json) |
 
-The five-case pilot used one trial per mode and two different request budgets. The result describes this setup. The generated Markdown report now presents the checked decision, equity, EV and the tool's evidence directly. The original model explanation remains in the saved trace.
+The generated report presents the checked decision, equity, EV and tool evidence. The trace preserves the original model response. [Report rendered from the mixed range run](agent/mixed-range/report.md)
 
 [Machine-readable results](evaluation.json) · [Cases and reference answers](../tasks.json) · [Pilot implementation](https://github.com/Snowmooniee/heads-up-poker-agent/commit/9e26b3abc266a81f12a09dbe055644f9f166a937) · [DeepSeek pricing](https://api-docs.deepseek.com/quick_start/pricing/)
