@@ -1,0 +1,48 @@
+{
+  "run_id": "a65634ad44d94f4e97ae4f9859528664",
+  "request": "Review the river call that cost 12 chips.",
+  "opponent_range": "KcKd",
+  "player": "hero",
+  "report": {
+    "action": "ask",
+    "decision_id": null,
+    "candidate_ids": [
+      "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:1:14",
+      "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14",
+      "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:4:14"
+    ],
+    "equity": null,
+    "call_ev": null,
+    "message": "Which hand did you mean? The matching hand numbers are 1, 2, 4."
+  },
+  "raw": null,
+  "error": null,
+  "events": [
+    {
+      "type": "tool",
+      "name": "find_river_calls",
+      "call_id": "fixed-lookup",
+      "arguments": {
+        "call_cost": 12
+      },
+      "result": "[{\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:1:14\", \"hand_no\": 1, \"board\": [\"2c\", \"7d\", \"9h\", \"Jc\", \"3s\"], \"hole_cards\": [\"As\", \"Ah\"], \"pot\": 36, \"to_call\": 12, \"uncalled_excess\": 0}, {\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14\", \"hand_no\": 2, \"board\": [\"As\", \"Ks\", \"Qs\", \"Js\", \"Ts\"], \"hole_cards\": [\"2c\", \"3d\"], \"pot\": 36, \"to_call\": 12, \"uncalled_excess\": 0}, {\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:4:14\", \"hand_no\": 4, \"board\": [\"2d\", \"6c\", \"8h\", \"Qd\", \"4s\"], \"hole_cards\": [\"Kc\", \"Kh\"], \"pot\": 36, \"to_call\": 12, \"uncalled_excess\": 0}]"
+    }
+  ],
+  "elapsed_seconds": 0.01571130007505417,
+  "api_requests": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "estimated_cost_usd": 0,
+  "model": "keyword",
+  "served_model": null,
+  "score": {
+    "exact_id": null,
+    "next_action": true,
+    "clarification": true,
+    "invented_ids": [],
+    "ev": null,
+    "explicit_ev": false,
+    "lookup_pass": true,
+    "errors": []
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "run_id": "9865e3325c264531b10b03c295e2cd88",
+  "request": "Review the river call that cost 10 chips.",
+  "opponent_range": "KcKd",
+  "player": "hero",
+  "report": {
+    "action": "act",
+    "decision_id": "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:3:14",
+    "candidate_ids": [],
+    "equity": "1",
+    "call_ev": "34",
+    "message": "Found the call in hand 3. Call EV is 34 chips."
+  },
+  "raw": null,
+  "error": null,
+  "events": [
+    {
+      "type": "tool",
+      "name": "find_river_calls",
+      "call_id": "fixed-lookup",
+      "arguments": {
+        "call_cost": 10
+      },
+      "result": "[{\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:3:14\", \"hand_no\": 3, \"board\": [\"2c\", \"7d\", \"9h\", \"Jc\", \"3s\"], \"hole_cards\": [\"As\", \"Ah\"], \"pot\": 100, \"to_call\": 10, \"uncalled_excess\": 66}]"
+    },
+    {
+      "type": "tool",
+      "name": "calculate_call_ev",
+      "call_id": "fixed-ev",
+      "arguments": {
+        "decision_id": "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:3:14"
+      },
+      "result": "{\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:3:14\", \"range\": \"KcKd\", \"combos\": 1, \"blocked\": 0, \"wins\": 1, \"ties\": 0, \"losses\": 0, \"equity\": \"1\", \"call_ev\": \"34\", \"fold_ev\": \"0\", \"break_even_equity\": \"5/22\", \"pot\": \"100\", \"to_call\": \"10\", \"uncalled_excess\": \"66\"}"
+    }
+  ],
+  "elapsed_seconds": 0.012278300011530519,
+  "api_requests": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "estimated_cost_usd": 0,
+  "model": "keyword",
+  "served_model": null,
+  "score": {
+    "exact_id": true,
+    "next_action": true,
+    "clarification": null,
+    "invented_ids": [],
+    "ev": true,
+    "explicit_ev": false,
+    "lookup_pass": true,
+    "errors": []
+  }
+}

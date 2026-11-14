@@ -1,0 +1,53 @@
+{
+  "run_id": "11a03bc897fe4371b6e6732671efb5a7",
+  "request": "Can you review my river call?",
+  "opponent_range": null,
+  "player": "hero",
+  "report": null,
+  "raw": "{\"type\":\"no_match\",\"decision_id\":null,\"candidate_ids\":[],\"equity\":null,\"call_ev\":null,\"message\":\"Need a hand number, decision ID, or river card to locate the call.\"}",
+  "error": "'action'",
+  "events": [
+    {
+      "type": "model",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Review the selected player's recorded river calls. Hand numbers are in deal order.\nEach record is the state before calling. to_call is the extra amount paid. The last board card is the river.\nHonor every explicit criterion, including exclusions and order. Reply in JSON with action, decision_id,\ncandidate_ids, equity, call_ev and message. Use:\n- act: one intended decision. Copy its full ID.\n- ask: multiple possible decisions. Copy every matching ID and ask which hand or another distinguishing question.\n- no_match: zero matches. out_of_scope: the request is outside river-call reviews.\nOutside act set decision_id, equity and call_ev to null. Outside ask use [] for candidate_ids.\nUse exact fractions or integers as strings for equity and call_ev only for a unique decision with a supplied range.\nRemove combos blocked by known cards. Equity = (wins + ties/2) / compatible combos.\nCall EV = equity * (pot - uncalled_excess + to_call) - to_call. Keep message short.\nUse find_river_calls to look up relevant records. Its filters are exact and optional. If you need a comparison or an\nexclusion, use a broader lookup and reason over the returned rows. For EV on exactly one intended decision, call\ncalculate_call_ev with the ID from lookup and use the result. If no valid EV is available, state why and leave it null."
+        },
+        {
+          "role": "user",
+          "content": "{\"request\": \"Can you review my river call?\", \"opponent_range\": null}"
+        }
+      ],
+      "response": {
+        "role": "assistant",
+        "content": "{\"type\":\"no_match\",\"decision_id\":null,\"candidate_ids\":[],\"equity\":null,\"call_ev\":null,\"message\":\"Need a hand number, decision ID, or river card to locate the call.\"}"
+      },
+      "input_tokens": 691,
+      "output_tokens": 47,
+      "finish_reason": "stop",
+      "elapsed_seconds": 1.0009764999849722
+    }
+  ],
+  "elapsed_seconds": 1.0039410999743268,
+  "api_requests": 1,
+  "input_tokens": 691,
+  "output_tokens": 47,
+  "estimated_cost_usd": 0.0002637,
+  "model": "deepseek-flash",
+  "served_model": "deepseek-flash",
+  "score": {
+    "exact_id": null,
+    "next_action": false,
+    "clarification": false,
+    "invented_ids": [],
+    "ev": null,
+    "explicit_ev": false,
+    "lookup_pass": false,
+    "errors": [
+      "response_error",
+      "next_action",
+      "unexpected_selection"
+    ]
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "run_id": "934f94e035d44385993e93da238332e2",
+  "request": "Review the river call that cost 25 chips.",
+  "opponent_range": null,
+  "player": "hero",
+  "report": {
+    "action": "no_match",
+    "decision_id": null,
+    "candidate_ids": [],
+    "equity": null,
+    "call_ev": null,
+    "message": "No recorded river call matches those conditions."
+  },
+  "raw": null,
+  "error": null,
+  "events": [
+    {
+      "type": "tool",
+      "name": "find_river_calls",
+      "call_id": "fixed-lookup",
+      "arguments": {
+        "call_cost": 25
+      },
+      "result": "[]"
+    }
+  ],
+  "elapsed_seconds": 0.0014592999359592795,
+  "api_requests": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "estimated_cost_usd": 0,
+  "model": "keyword",
+  "served_model": null,
+  "score": {
+    "exact_id": null,
+    "next_action": true,
+    "clarification": null,
+    "invented_ids": [],
+    "ev": null,
+    "explicit_ev": false,
+    "lookup_pass": true,
+    "errors": []
+  }
+}

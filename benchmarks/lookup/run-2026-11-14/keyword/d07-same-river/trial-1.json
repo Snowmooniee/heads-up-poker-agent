@@ -1,0 +1,46 @@
+{
+  "run_id": "e5837ab2e2c54fbbae6be53e70aac084",
+  "request": "Find my call where the river was 3s.",
+  "opponent_range": null,
+  "player": "hero",
+  "report": {
+    "action": "no_match",
+    "decision_id": null,
+    "candidate_ids": [],
+    "equity": null,
+    "call_ev": null,
+    "message": "No recorded river call matches those conditions."
+  },
+  "raw": null,
+  "error": null,
+  "events": [
+    {
+      "type": "tool",
+      "name": "find_river_calls",
+      "call_id": "fixed-lookup",
+      "arguments": {
+        "river_card": "3s"
+      },
+      "result": "[]"
+    }
+  ],
+  "elapsed_seconds": 0.0067931999219581485,
+  "api_requests": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "estimated_cost_usd": 0,
+  "model": "keyword",
+  "served_model": null,
+  "score": {
+    "exact_id": null,
+    "next_action": false,
+    "clarification": false,
+    "invented_ids": [],
+    "ev": null,
+    "explicit_ev": false,
+    "lookup_pass": false,
+    "errors": [
+      "next_action"
+    ]
+  }
+}

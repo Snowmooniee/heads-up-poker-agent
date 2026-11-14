@@ -1,0 +1,45 @@
+{
+  "run_id": "3c7d48c4e7b240afaa3f7c694ca0d5e0",
+  "request": "Find my river call in hand 2 where I had to pay 8 chips.",
+  "opponent_range": null,
+  "player": "hero",
+  "report": {
+    "action": "no_match",
+    "decision_id": null,
+    "candidate_ids": [],
+    "equity": null,
+    "call_ev": null,
+    "message": "No recorded river call matches those conditions."
+  },
+  "raw": null,
+  "error": null,
+  "events": [
+    {
+      "type": "tool",
+      "name": "find_river_calls",
+      "call_id": "fixed-lookup",
+      "arguments": {
+        "hand_no": 2,
+        "call_cost": 8
+      },
+      "result": "[]"
+    }
+  ],
+  "elapsed_seconds": 0.001485800021328032,
+  "api_requests": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "estimated_cost_usd": 0,
+  "model": "keyword",
+  "served_model": null,
+  "score": {
+    "exact_id": null,
+    "next_action": true,
+    "clarification": null,
+    "invented_ids": [],
+    "ev": null,
+    "explicit_ev": false,
+    "lookup_pass": true,
+    "errors": []
+  }
+}

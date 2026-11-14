@@ -8,7 +8,7 @@ from corecoder.llm import LLMResponse, ToolCall
 
 from .poker_lookup import lookup_calls, outcome
 from .poker_lookup_agent import REQUESTS_PER_TRIAL, run_model_lookup
-from .poker_lookup_eval import FIXTURES, grade, load_tasks
+from .poker_lookup_eval import FIXTURES, clarifies, grade, load_tasks
 from .poker_query import save_history
 
 
@@ -34,6 +34,8 @@ def check():
         assert [row["hand_no"] for row in catalog.values()] == [1, 2, 3, 5, 6]
         assert [row["hand_no"] for row in lookup_calls(database, "opponent")] == [4]
         assert not lookup_calls(database, "hero", decision_id=f"{source}:4:15")
+        assert [row["hand_no"] for row in lookup_calls(database, "hero", river_card="4S")] == [2]
+        assert [row["hand_no"] for row in lookup_calls(database, "hero", river_card="2h")] == [5]
 
         def run(task_id, *replies, direct=False):
             task = labeled[task_id]
@@ -47,6 +49,11 @@ def check():
         trace, score = run("h07-same-sixteen", find_pair, ask)
         assert score["lookup_pass"] and trace["api_requests"] == 2
         assert [event["name"] for event in trace["events"] if event["type"] == "tool"] == ["find_river_calls"]
+        pair = [catalog[key] for key in choices]
+        assert clarifies("Which hand_no?", pair)
+        assert clarifies("Which river call do you mean? Share the hand number.", pair)
+        assert clarifies("Two calls match (hands 2, 3). Which one?", pair)
+        assert not clarifies("Two calls match (hands 2, 5). Which one?", pair)
 
         generic = LLMResponse(content=json.dumps(outcome("ask", "Can you clarify?", candidate_ids=choices)))
         _, score = run("h07-same-sixteen", find_pair, generic)
@@ -72,6 +79,17 @@ def check():
         tool_guess = LLMResponse(tool_calls=[ToolCall("invented", "calculate_call_ev", {"decision_id": invented})])
         _, score = run("h02-numbered-loss", tool_guess, find_loss, calculate, loss)
         assert score["invented_ids"] == [invented] and score["ev"]
+
+        dev = Path(root) / "dev.sqlite3"
+        dev_source = save_history(FIXTURES / manifest["histories"]["dev"]["path"], dev)["source_id"]
+        original = labeled["d07-same-river"]
+        options = [f"{dev_source}:{key}" for key in original["candidates"]]
+        request = LLMResponse(tool_calls=[ToolCall("river", "find_river_calls", {"river_card": "3s"})])
+        question = LLMResponse(content=json.dumps(outcome("ask", "Which hand did you mean?", candidate_ids=options)))
+        trace = run_model_lookup(dev, "hero", original["request"], None, ScriptedModel(request, question))
+        returned = next(event for event in trace["events"] if event["type"] == "tool")
+        assert [row["hand_no"] for row in json.loads(returned["result"])] == [1, 3]
+        assert trace["report"]["candidate_ids"] == options
     print("Lookup, player scope, clarification, exact EV and raw ID scoring passed.")
 
 

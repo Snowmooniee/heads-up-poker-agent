@@ -35,7 +35,13 @@ LIVE_WORKERS = 6
 PLAYER = "hero"
 ACCESS_ERRORS = {"AuthenticationError", "PermissionDeniedError", "PaymentRequiredError", "APIConnectionError"}
 HAND_QUESTION = re.compile(
-    r"\b(?:(?:which|what) hand(?: number)?|hand (?:number|did you mean)|decision id|choose (?:a|the) hand)\b",
+    r"\b(?:(?:which|what) hand(?:_no| number)?|hand did you mean|decision[ _]id)\b",
+)
+ASK_FOR_HAND = re.compile(
+    r"\b(?:share|give|specify|provide|tell me)\b.{0,32}\b(?:hand number|hand_no|decision[ _]id)\b",
+)
+OFFERED_HANDS = re.compile(
+    r"\bhands?\s*(#?\d+(?:\s*(?:,\s*(?:or\s+|and\s+)?|\bor\b|\band\b)\s*#?\d+)*)",
 )
 
 
@@ -93,15 +99,17 @@ def clarifies(message, rows):
     amounts = {row["to_call"] for row in rows}
     cards = {row["board"][-1] for row in rows}
     text = message.lower()
+    if len(hand_numbers) == len(rows) and ASK_FOR_HAND.search(text):
+        return True
+    options = {int(number) for group in OFFERED_HANDS.findall(text) for number in re.findall(r"\d+", group)}
     for question in re.findall(r"[^.!?]+\?", text):
         asks_hand = HAND_QUESTION.search(question)
-        options = set(re.findall(r"\b(?:hands?|or|and)\s*#?\s*(\d+)\b", text))
         offers_choice = re.search(r"\b(?:which one|which call|do you mean|did you mean|would you like)\b", question)
-        if offers_choice and all(str(number) in options for number in hand_numbers):
+        if offers_choice and options == hand_numbers:
             asks_hand = True
         asks_amount = re.search(r"\b(?:which|what|how many)\b.{0,32}\b(?:chips|amount|cost)\b", question)
         asks_card = re.search(r"\b(?:which|what)\b.{0,28}\b(?:river card|last card|fifth card)\b", question)
-        if ((asks_hand and len(hand_numbers) == len(rows)) or "decision id" in question
+        if ((asks_hand and len(hand_numbers) == len(rows)) or re.search(r"\bdecision[ _]id\b", question)
                 or (asks_amount and len(amounts) == len(rows)) or (asks_card and len(cards) == len(rows))):
             return True
     return False
@@ -195,7 +203,7 @@ def summary(rows):
     }
 
 
-def write_summary(output, manifest, rows):
+def write_summary(output, manifest, rows, *, recorded_run=None):
     totals = {
         split: {
             mode: summary([row for row in rows if row["split"] == split and row["mode"] == mode])
@@ -211,6 +219,9 @@ def write_summary(output, manifest, rows):
         "pricing_source": "https://api-docs.deepseek.com/quick_start/pricing/",
     }
     environment = {"system": platform.system(), "python": platform.python_version(), "sqlite": sqlite3.sqlite_version}
+    if recorded_run is not None:
+        config = recorded_run["configuration"]
+        environment = recorded_run["environment"]
     result = {"dataset": manifest, "configuration": config, "environment": environment, "totals": totals, "trials": rows}
     (output / "evaluation.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
     lines = ["# Natural-language river lookup evaluation", "", f"Dataset `{manifest['version']}`.", ""]
@@ -241,6 +252,31 @@ def write_summary(output, manifest, rows):
         lines.append(f"| {row['split']} | {row['mode']} | {row['task']} | {row['trial']} | {errors} | [Trace]({row['trace']}) |")
     (output / "evaluation.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     return result
+
+
+def regrade(source, output):
+    """Apply the current grader to recorded traces and keep the original run intact."""
+    manifest, tasks = load_tasks()
+    originals = json.loads((source / "evaluation.json").read_text(encoding="utf-8"))
+    if manifest != originals["dataset"]:
+        raise ValueError("The recorded run used a different dataset.")
+    labeled = {task["id"]: task for task in tasks}
+    output.mkdir(parents=True, exist_ok=False)
+    catalogs = {}
+    for name in {trial["split"] for trial in originals["trials"]}:
+        database = output / f"{name}.sqlite3"
+        save_history(FIXTURES / manifest["histories"][name]["path"], database)
+        catalogs[name] = {row["decision_id"]: row for row in lookup_calls(database, PLAYER)}
+    rows = []
+    for trial in originals["trials"]:
+        path = Path(trial["trace"])
+        trace = json.loads((source / path).read_text(encoding="utf-8"))
+        name = trial["split"]
+        score = grade(labeled[trial["task"]], trace, catalogs[name], manifest["histories"][name]["sha256"])
+        (output / path).parent.mkdir(parents=True, exist_ok=True)
+        (output / path).write_text(json.dumps({**trace, "score": score}, indent=2) + "\n", encoding="utf-8")
+        rows.append({**trial, **score})
+    return write_summary(output, manifest, rows, recorded_run=originals)
 
 
 def run_case(task, sources, modes, api_key, output):
@@ -306,7 +342,12 @@ def main():
     parser.add_argument("--split", choices=("all", "dev", "heldout"), default="all")
     parser.add_argument("--mode", choices=("keyword", "direct", "agent", "compare"), default="keyword")
     parser.add_argument("--env-file", type=Path, default=Path(".env"))
+    parser.add_argument("--regrade", type=Path, metavar="SAVED_RUN", help="Score a recorded run without API calls")
     args = parser.parse_args()
+    if args.regrade:
+        result = regrade(args.regrade, args.output)
+        print(json.dumps(result["totals"], indent=2))
+        return 0
     api_key = None
     if args.mode != "keyword":
         load_dotenv(args.env_file)

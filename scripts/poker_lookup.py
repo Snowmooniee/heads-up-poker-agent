@@ -35,7 +35,7 @@ def unknown_references(message, catalog):
 def lookup_calls(database, player, *, hand_no=None, call_cost=None, river_card=None, decision_id=None):
     with closing(open_saved_database(database)) as db:
         rows = find_decisions(db, "river", "call", hand_no=hand_no, decision_id=decision_id, player=player)
-    river_card = river_card.title() if river_card is not None else None
+    river_card = card_code(river_card) if river_card is not None else None
     return [
         {
             "decision_id": row["decision_id"], "hand_no": row["hand_no"],

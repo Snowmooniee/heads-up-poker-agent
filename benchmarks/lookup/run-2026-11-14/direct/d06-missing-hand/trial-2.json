@@ -1,0 +1,148 @@
+{
+  "run_id": "342b64b68d954b1f9137304fdf26ab74",
+  "request": "Can you review my river call?",
+  "opponent_range": null,
+  "player": "hero",
+  "report": {
+    "action": "ask",
+    "decision_id": null,
+    "candidate_ids": [
+      "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:1:14",
+      "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14",
+      "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:3:14",
+      "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:4:14"
+    ],
+    "equity": null,
+    "call_ev": null,
+    "message": "All four river calls are eligible; which hand_no or decision_id, and what opponent range?"
+  },
+  "raw": "{\"type\": \"json_object\", \"action\": \"ask\", \"decision_id\": null, \"candidate_ids\": [\"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:1:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:3:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:4:14\"], \"equity\": null, \"call_ev\": null, \"message\": \"All four river calls are eligible; which hand_no or decision_id, and what opponent range?\"}",
+  "error": null,
+  "events": [
+    {
+      "type": "model",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Review the selected player's recorded river calls. Hand numbers are in deal order.\nEach record is the state before calling. to_call is the extra amount paid. The last board card is the river.\nHonor every explicit criterion, including exclusions and order. Reply in JSON with action, decision_id,\ncandidate_ids, equity, call_ev and message. Use:\n- act: one intended decision. Copy its full ID.\n- ask: multiple possible decisions. Copy every matching ID and ask which hand or another distinguishing question.\n- no_match: zero matches. out_of_scope: the request is outside river-call reviews.\nOutside act set decision_id, equity and call_ev to null. Outside ask use [] for candidate_ids.\nUse exact fractions or integers as strings for equity and call_ev only for a unique decision with a supplied range.\nRemove combos blocked by known cards. Equity = (wins + ties/2) / compatible combos.\nCall EV = equity * (pot - uncalled_excess + to_call) - to_call. Keep message short.\nThe request includes the full catalog of eligible decisions. Work from those records and calculate EV yourself.\nEach draft and revision must follow the same JSON format."
+        },
+        {
+          "role": "user",
+          "content": "{\"request\": \"Can you review my river call?\", \"opponent_range\": null, \"catalog\": [{\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:1:14\", \"hand_no\": 1, \"board\": [\"2c\", \"7d\", \"9h\", \"Jc\", \"3s\"], \"hole_cards\": [\"As\", \"Ah\"], \"pot\": 36, \"to_call\": 12, \"uncalled_excess\": 0}, {\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14\", \"hand_no\": 2, \"board\": [\"As\", \"Ks\", \"Qs\", \"Js\", \"Ts\"], \"hole_cards\": [\"2c\", \"3d\"], \"pot\": 36, \"to_call\": 12, \"uncalled_excess\": 0}, {\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:3:14\", \"hand_no\": 3, \"board\": [\"2c\", \"7d\", \"9h\", \"Jc\", \"3s\"], \"hole_cards\": [\"As\", \"Ah\"], \"pot\": 100, \"to_call\": 10, \"uncalled_excess\": 66}, {\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:4:14\", \"hand_no\": 4, \"board\": [\"2d\", \"6c\", \"8h\", \"Qd\", \"4s\"], \"hole_cards\": [\"Kc\", \"Kh\"], \"pot\": 36, \"to_call\": 12, \"uncalled_excess\": 0}]}"
+        }
+      ],
+      "response": {
+        "role": "assistant",
+        "content": "{\"type\": \"json_object\", \"action\": \"ask\", \"decision_id\": null, \"candidate_ids\": [\"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:1:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:3:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:4:14\"], \"equity\": null, \"call_ev\": null, \"message\": \"Multiple river-call spots match. Which hand (hand_no) or which decision_id do you want reviewed?\"}"
+      },
+      "input_tokens": 735,
+      "output_tokens": 232,
+      "finish_reason": "stop",
+      "elapsed_seconds": 1.4178144000470638
+    },
+    {
+      "type": "model",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Review the selected player's recorded river calls. Hand numbers are in deal order.\nEach record is the state before calling. to_call is the extra amount paid. The last board card is the river.\nHonor every explicit criterion, including exclusions and order. Reply in JSON with action, decision_id,\ncandidate_ids, equity, call_ev and message. Use:\n- act: one intended decision. Copy its full ID.\n- ask: multiple possible decisions. Copy every matching ID and ask which hand or another distinguishing question.\n- no_match: zero matches. out_of_scope: the request is outside river-call reviews.\nOutside act set decision_id, equity and call_ev to null. Outside ask use [] for candidate_ids.\nUse exact fractions or integers as strings for equity and call_ev only for a unique decision with a supplied range.\nRemove combos blocked by known cards. Equity = (wins + ties/2) / compatible combos.\nCall EV = equity * (pot - uncalled_excess + to_call) - to_call. Keep message short.\nThe request includes the full catalog of eligible decisions. Work from those records and calculate EV yourself.\nEach draft and revision must follow the same JSON format."
+        },
+        {
+          "role": "user",
+          "content": "{\"request\": \"Can you review my river call?\", \"opponent_range\": null, \"catalog\": [{\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:1:14\", \"hand_no\": 1, \"board\": [\"2c\", \"7d\", \"9h\", \"Jc\", \"3s\"], \"hole_cards\": [\"As\", \"Ah\"], \"pot\": 36, \"to_call\": 12, \"uncalled_excess\": 0}, {\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14\", \"hand_no\": 2, \"board\": [\"As\", \"Ks\", \"Qs\", \"Js\", \"Ts\"], \"hole_cards\": [\"2c\", \"3d\"], \"pot\": 36, \"to_call\": 12, \"uncalled_excess\": 0}, {\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:3:14\", \"hand_no\": 3, \"board\": [\"2c\", \"7d\", \"9h\", \"Jc\", \"3s\"], \"hole_cards\": [\"As\", \"Ah\"], \"pot\": 100, \"to_call\": 10, \"uncalled_excess\": 66}, {\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:4:14\", \"hand_no\": 4, \"board\": [\"2d\", \"6c\", \"8h\", \"Qd\", \"4s\"], \"hole_cards\": [\"Kc\", \"Kh\"], \"pot\": 36, \"to_call\": 12, \"uncalled_excess\": 0}]}"
+        },
+        {
+          "role": "assistant",
+          "content": "{\"type\": \"json_object\", \"action\": \"ask\", \"decision_id\": null, \"candidate_ids\": [\"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:1:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:3:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:4:14\"], \"equity\": null, \"call_ev\": null, \"message\": \"Multiple river-call spots match. Which hand (hand_no) or which decision_id do you want reviewed?\"}"
+        },
+        {
+          "role": "user",
+          "content": "Check your draft against the request and catalog. Correct any errors and return the complete JSON."
+        }
+      ],
+      "response": {
+        "role": "assistant",
+        "content": "{\"type\": \"json_object\", \"action\": \"ask\", \"decision_id\": null, \"candidate_ids\": [\"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:1:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:3:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:4:14\"], \"equity\": null, \"call_ev\": null, \"message\": \"Which hand (hand_no) or decision_id should I review?\"}"
+      },
+      "input_tokens": 989,
+      "output_tokens": 223,
+      "finish_reason": "stop",
+      "elapsed_seconds": 1.1339293000055477
+    },
+    {
+      "type": "model",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Review the selected player's recorded river calls. Hand numbers are in deal order.\nEach record is the state before calling. to_call is the extra amount paid. The last board card is the river.\nHonor every explicit criterion, including exclusions and order. Reply in JSON with action, decision_id,\ncandidate_ids, equity, call_ev and message. Use:\n- act: one intended decision. Copy its full ID.\n- ask: multiple possible decisions. Copy every matching ID and ask which hand or another distinguishing question.\n- no_match: zero matches. out_of_scope: the request is outside river-call reviews.\nOutside act set decision_id, equity and call_ev to null. Outside ask use [] for candidate_ids.\nUse exact fractions or integers as strings for equity and call_ev only for a unique decision with a supplied range.\nRemove combos blocked by known cards. Equity = (wins + ties/2) / compatible combos.\nCall EV = equity * (pot - uncalled_excess + to_call) - to_call. Keep message short.\nThe request includes the full catalog of eligible decisions. Work from those records and calculate EV yourself.\nEach draft and revision must follow the same JSON format."
+        },
+        {
+          "role": "user",
+          "content": "{\"request\": \"Can you review my river call?\", \"opponent_range\": null, \"catalog\": [{\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:1:14\", \"hand_no\": 1, \"board\": [\"2c\", \"7d\", \"9h\", \"Jc\", \"3s\"], \"hole_cards\": [\"As\", \"Ah\"], \"pot\": 36, \"to_call\": 12, \"uncalled_excess\": 0}, {\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14\", \"hand_no\": 2, \"board\": [\"As\", \"Ks\", \"Qs\", \"Js\", \"Ts\"], \"hole_cards\": [\"2c\", \"3d\"], \"pot\": 36, \"to_call\": 12, \"uncalled_excess\": 0}, {\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:3:14\", \"hand_no\": 3, \"board\": [\"2c\", \"7d\", \"9h\", \"Jc\", \"3s\"], \"hole_cards\": [\"As\", \"Ah\"], \"pot\": 100, \"to_call\": 10, \"uncalled_excess\": 66}, {\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:4:14\", \"hand_no\": 4, \"board\": [\"2d\", \"6c\", \"8h\", \"Qd\", \"4s\"], \"hole_cards\": [\"Kc\", \"Kh\"], \"pot\": 36, \"to_call\": 12, \"uncalled_excess\": 0}]}"
+        },
+        {
+          "role": "assistant",
+          "content": "{\"type\": \"json_object\", \"action\": \"ask\", \"decision_id\": null, \"candidate_ids\": [\"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:1:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:3:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:4:14\"], \"equity\": null, \"call_ev\": null, \"message\": \"Which hand (hand_no) or decision_id should I review?\"}"
+        },
+        {
+          "role": "user",
+          "content": "Check your draft against the request and catalog. Correct any errors and return the complete JSON."
+        }
+      ],
+      "response": {
+        "role": "assistant",
+        "content": "{\"type\": \"json_object\", \"action\": \"ask\", \"decision_id\": null, \"candidate_ids\": [\"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:1:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:3:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:4:14\"], \"equity\": null, \"call_ev\": null, \"message\": \"No opponent range given; which hand_no or decision_id should I evaluate?\"}"
+      },
+      "input_tokens": 980,
+      "output_tokens": 225,
+      "finish_reason": "stop",
+      "elapsed_seconds": 1.3484834999544546
+    },
+    {
+      "type": "model",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Review the selected player's recorded river calls. Hand numbers are in deal order.\nEach record is the state before calling. to_call is the extra amount paid. The last board card is the river.\nHonor every explicit criterion, including exclusions and order. Reply in JSON with action, decision_id,\ncandidate_ids, equity, call_ev and message. Use:\n- act: one intended decision. Copy its full ID.\n- ask: multiple possible decisions. Copy every matching ID and ask which hand or another distinguishing question.\n- no_match: zero matches. out_of_scope: the request is outside river-call reviews.\nOutside act set decision_id, equity and call_ev to null. Outside ask use [] for candidate_ids.\nUse exact fractions or integers as strings for equity and call_ev only for a unique decision with a supplied range.\nRemove combos blocked by known cards. Equity = (wins + ties/2) / compatible combos.\nCall EV = equity * (pot - uncalled_excess + to_call) - to_call. Keep message short.\nThe request includes the full catalog of eligible decisions. Work from those records and calculate EV yourself.\nEach draft and revision must follow the same JSON format."
+        },
+        {
+          "role": "user",
+          "content": "{\"request\": \"Can you review my river call?\", \"opponent_range\": null, \"catalog\": [{\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:1:14\", \"hand_no\": 1, \"board\": [\"2c\", \"7d\", \"9h\", \"Jc\", \"3s\"], \"hole_cards\": [\"As\", \"Ah\"], \"pot\": 36, \"to_call\": 12, \"uncalled_excess\": 0}, {\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14\", \"hand_no\": 2, \"board\": [\"As\", \"Ks\", \"Qs\", \"Js\", \"Ts\"], \"hole_cards\": [\"2c\", \"3d\"], \"pot\": 36, \"to_call\": 12, \"uncalled_excess\": 0}, {\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:3:14\", \"hand_no\": 3, \"board\": [\"2c\", \"7d\", \"9h\", \"Jc\", \"3s\"], \"hole_cards\": [\"As\", \"Ah\"], \"pot\": 100, \"to_call\": 10, \"uncalled_excess\": 66}, {\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:4:14\", \"hand_no\": 4, \"board\": [\"2d\", \"6c\", \"8h\", \"Qd\", \"4s\"], \"hole_cards\": [\"Kc\", \"Kh\"], \"pot\": 36, \"to_call\": 12, \"uncalled_excess\": 0}]}"
+        },
+        {
+          "role": "assistant",
+          "content": "{\"type\": \"json_object\", \"action\": \"ask\", \"decision_id\": null, \"candidate_ids\": [\"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:1:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:3:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:4:14\"], \"equity\": null, \"call_ev\": null, \"message\": \"No opponent range given; which hand_no or decision_id should I evaluate?\"}"
+        },
+        {
+          "role": "user",
+          "content": "Check your draft against the request and catalog. Correct any errors and return the complete JSON."
+        }
+      ],
+      "response": {
+        "role": "assistant",
+        "content": "{\"type\": \"json_object\", \"action\": \"ask\", \"decision_id\": null, \"candidate_ids\": [\"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:1:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:3:14\", \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:4:14\"], \"equity\": null, \"call_ev\": null, \"message\": \"All four river calls are eligible; which hand_no or decision_id, and what opponent range?\"}"
+      },
+      "input_tokens": 982,
+      "output_tokens": 229,
+      "finish_reason": "stop",
+      "elapsed_seconds": 1.198914400069043
+    }
+  ],
+  "elapsed_seconds": 5.102829499985091,
+  "api_requests": 4,
+  "input_tokens": 3686,
+  "output_tokens": 909,
+  "estimated_cost_usd": 0.0021966,
+  "model": "deepseek-flash",
+  "served_model": "deepseek-flash",
+  "score": {
+    "exact_id": null,
+    "next_action": true,
+    "clarification": true,
+    "invented_ids": [],
+    "ev": null,
+    "explicit_ev": false,
+    "lookup_pass": true,
+    "errors": []
+  }
+}

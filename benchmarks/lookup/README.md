@@ -27,6 +27,8 @@ The keyword parser and fixed pipeline query the same database and use the same E
 
 Run each model three times per task with fresh state. The deterministic pipeline runs once per task. Report per-trial scores and cases that pass on all three trials. Each held-out result row links to the evidence used to diagnose its failures.
 
+Read the [live comparison and trace-based error analysis](run-2026-11-14/README.md) for the 196 recorded trials.
+
 ## Keyword baseline
 
 | Split | Exact ID | Next action | Clarification | Invented IDs | Joint lookup | EV | Explicit hand EV |
@@ -34,7 +36,7 @@ Run each model three times per task with fresh state. The deterministic pipeline
 | Development | 4/4 | 10/10 | 3/3 | 0 | 10/10 | 4/4 | 2/2 |
 | Held-out | 4/6 | 16/18 | 3/5 | 0 | 14/18 | 4/5 | 2/2 |
 
-On held-out requests, the keyword pipeline reached 4/6 on clear requests, 3/5 on ambiguous requests, 4/4 on missing records, and 3/3 on out-of-scope requests. It used zero API requests. Model scores come from the live three-way comparison.
+This standalone run includes the card-normalization fix. On held-out requests, the keyword pipeline reached 4/6 on clear requests, 3/5 on ambiguous requests, 4/4 on missing records, and 3/3 on out-of-scope requests. It used zero API requests.
 
 ## Keyword error analysis
 
@@ -56,6 +58,12 @@ From the repository root in the project environment, run the offline tool and gr
 ```sh
 python -m scripts.check_poker_lookup
 python -m scripts.poker_lookup_eval .poker-agent/lookup-keyword
+```
+
+To score the published traces again without an API key, pass the recorded run as input and write the results to a new folder.
+
+```sh
+python -m scripts.poker_lookup_eval .poker-agent/lookup-regraded --regrade benchmarks/lookup/run-2026-11-14
 ```
 
 To run the complete comparison, set `DEEPSEEK_API_KEY` locally and choose a new output directory. The evaluator stores `evaluation.md`, `evaluation.json` and each trial's trace in that directory.

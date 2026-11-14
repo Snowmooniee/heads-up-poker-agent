@@ -1,0 +1,49 @@
+{
+  "run_id": "1d28cd4170904089a555e98bab9b30d0",
+  "request": "I mean the river call where I put in less than 20, and it wasn't an eight-chip call.",
+  "opponent_range": null,
+  "player": "hero",
+  "report": {
+    "action": "ask",
+    "decision_id": null,
+    "candidate_ids": [
+      "a40ff21b850317e62cc5280fed38dd5bb82689f5b719fa207c692c9e081e2766:1:14",
+      "a40ff21b850317e62cc5280fed38dd5bb82689f5b719fa207c692c9e081e2766:6:13"
+    ],
+    "equity": null,
+    "call_ev": null,
+    "message": "Which hand did you mean? The matching hand numbers are 1, 6."
+  },
+  "raw": null,
+  "error": null,
+  "events": [
+    {
+      "type": "tool",
+      "name": "find_river_calls",
+      "call_id": "fixed-lookup",
+      "arguments": {
+        "call_cost": 8
+      },
+      "result": "[{\"decision_id\": \"a40ff21b850317e62cc5280fed38dd5bb82689f5b719fa207c692c9e081e2766:1:14\", \"hand_no\": 1, \"board\": [\"2s\", \"8d\", \"Jh\", \"4c\", \"Ks\"], \"hole_cards\": [\"Qc\", \"Qd\"], \"pot\": 32, \"to_call\": 8, \"uncalled_excess\": 0}, {\"decision_id\": \"a40ff21b850317e62cc5280fed38dd5bb82689f5b719fa207c692c9e081e2766:6:13\", \"hand_no\": 6, \"board\": [\"Ks\", \"Kh\", \"Kd\", \"As\", \"Ah\"], \"hole_cards\": [\"7c\", \"8d\"], \"pot\": 24, \"to_call\": 8, \"uncalled_excess\": 0}]"
+    }
+  ],
+  "elapsed_seconds": 0.0054299000184983015,
+  "api_requests": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "estimated_cost_usd": 0,
+  "model": "keyword",
+  "served_model": null,
+  "score": {
+    "exact_id": null,
+    "next_action": true,
+    "clarification": false,
+    "invented_ids": [],
+    "ev": null,
+    "explicit_ev": false,
+    "lookup_pass": false,
+    "errors": [
+      "clarification"
+    ]
+  }
+}

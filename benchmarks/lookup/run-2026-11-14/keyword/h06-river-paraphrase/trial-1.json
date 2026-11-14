@@ -1,0 +1,53 @@
+{
+  "run_id": "cf6bead6e63a4d7494ae254be559a947",
+  "request": "Which call did I make on the last betting round when an ace of hearts completed the board?",
+  "opponent_range": "5c6d 9cTd",
+  "player": "hero",
+  "report": {
+    "action": "act",
+    "decision_id": "a40ff21b850317e62cc5280fed38dd5bb82689f5b719fa207c692c9e081e2766:6:13",
+    "candidate_ids": [],
+    "equity": "1/2",
+    "call_ev": "8",
+    "message": "Found the call in hand 6. Call EV is 8 chips."
+  },
+  "raw": null,
+  "error": null,
+  "events": [
+    {
+      "type": "tool",
+      "name": "find_river_calls",
+      "call_id": "fixed-lookup",
+      "arguments": {
+        "river_card": "Ah"
+      },
+      "result": "[{\"decision_id\": \"a40ff21b850317e62cc5280fed38dd5bb82689f5b719fa207c692c9e081e2766:6:13\", \"hand_no\": 6, \"board\": [\"Ks\", \"Kh\", \"Kd\", \"As\", \"Ah\"], \"hole_cards\": [\"7c\", \"8d\"], \"pot\": 24, \"to_call\": 8, \"uncalled_excess\": 0}]"
+    },
+    {
+      "type": "tool",
+      "name": "calculate_call_ev",
+      "call_id": "fixed-ev",
+      "arguments": {
+        "decision_id": "a40ff21b850317e62cc5280fed38dd5bb82689f5b719fa207c692c9e081e2766:6:13"
+      },
+      "result": "{\"decision_id\": \"a40ff21b850317e62cc5280fed38dd5bb82689f5b719fa207c692c9e081e2766:6:13\", \"range\": \"5c6d 9cTd\", \"combos\": 2, \"blocked\": 0, \"wins\": 0, \"ties\": 2, \"losses\": 0, \"equity\": \"1/2\", \"call_ev\": \"8\", \"fold_ev\": \"0\", \"break_even_equity\": \"1/4\", \"pot\": \"24\", \"to_call\": \"8\", \"uncalled_excess\": \"0\"}"
+    }
+  ],
+  "elapsed_seconds": 0.0038609999464824796,
+  "api_requests": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "estimated_cost_usd": 0,
+  "model": "keyword",
+  "served_model": null,
+  "score": {
+    "exact_id": true,
+    "next_action": true,
+    "clarification": null,
+    "invented_ids": [],
+    "ev": true,
+    "explicit_ev": false,
+    "lookup_pass": true,
+    "errors": []
+  }
+}

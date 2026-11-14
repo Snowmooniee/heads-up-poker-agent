@@ -1,0 +1,47 @@
+{
+  "run_id": "6cb7bea338cf4e6793fb42c61ef9af5d",
+  "request": "Find the river call I made when the king of spades arrived on the end.",
+  "opponent_range": null,
+  "player": "hero",
+  "report": {
+    "action": "ask",
+    "decision_id": null,
+    "candidate_ids": [
+      "a40ff21b850317e62cc5280fed38dd5bb82689f5b719fa207c692c9e081e2766:1:14",
+      "a40ff21b850317e62cc5280fed38dd5bb82689f5b719fa207c692c9e081e2766:3:13"
+    ],
+    "equity": null,
+    "call_ev": null,
+    "message": "Which hand did you mean? The matching hand numbers are 1, 3."
+  },
+  "raw": null,
+  "error": null,
+  "events": [
+    {
+      "type": "tool",
+      "name": "find_river_calls",
+      "call_id": "fixed-lookup",
+      "arguments": {
+        "river_card": "Ks"
+      },
+      "result": "[{\"decision_id\": \"a40ff21b850317e62cc5280fed38dd5bb82689f5b719fa207c692c9e081e2766:1:14\", \"hand_no\": 1, \"board\": [\"2s\", \"8d\", \"Jh\", \"4c\", \"Ks\"], \"hole_cards\": [\"Qc\", \"Qd\"], \"pot\": 32, \"to_call\": 8, \"uncalled_excess\": 0}, {\"decision_id\": \"a40ff21b850317e62cc5280fed38dd5bb82689f5b719fa207c692c9e081e2766:3:13\", \"hand_no\": 3, \"board\": [\"Ad\", \"8h\", \"3c\", \"2s\", \"Ks\"], \"hole_cards\": [\"Jc\", \"Tc\"], \"pot\": 40, \"to_call\": 16, \"uncalled_excess\": 0}]"
+    }
+  ],
+  "elapsed_seconds": 0.005148299969732761,
+  "api_requests": 0,
+  "input_tokens": 0,
+  "output_tokens": 0,
+  "estimated_cost_usd": 0,
+  "model": "keyword",
+  "served_model": null,
+  "score": {
+    "exact_id": null,
+    "next_action": true,
+    "clarification": true,
+    "invented_ids": [],
+    "ev": null,
+    "explicit_ev": false,
+    "lookup_pass": true,
+    "errors": []
+  }
+}
