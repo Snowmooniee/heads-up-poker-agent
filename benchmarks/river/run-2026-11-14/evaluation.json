@@ -1,0 +1,351 @@
+{
+  "environment": {
+    "system": "Windows",
+    "python": "3.11.9",
+    "sqlite": "3.45.1"
+  },
+  "source_id": "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee",
+  "totals": {
+    "agent": {
+      "passed": 5,
+      "total": 5,
+      "tool_calls": 10,
+      "api_requests": 15,
+      "input_tokens": 12364,
+      "output_tokens": 1584,
+      "median_seconds": 3.313,
+      "estimated_cost_usd": 0.00561
+    },
+    "direct": {
+      "passed": 0,
+      "total": 5,
+      "tool_calls": 0,
+      "api_requests": 5,
+      "input_tokens": 2209,
+      "output_tokens": 1299,
+      "median_seconds": 1.735,
+      "estimated_cost_usd": 0.0022215
+    }
+  },
+  "tasks": [
+    {
+      "mode": "agent",
+      "task": "mixed-range",
+      "split": "dev",
+      "passed": true,
+      "errors": [],
+      "expected": {
+        "status": "reviewed",
+        "decision": "1:14",
+        "equity": "1/2",
+        "call_ev": "12",
+        "recommendation": "call"
+      },
+      "report": {
+        "status": "reviewed",
+        "decision_id": "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:1:14",
+        "equity": "1/2",
+        "call_ev": "12",
+        "recommendation": "call",
+        "explanation": "Hero has As Ah on board 2c 7d 9h Jc 3s facing a 12 bet into a pot of 36 (no uncalled excess). Against the supplied range KcKd 9c9d, both combos are unblocked, and hero wins against KcKd while losing to 9c9d (set of nines), giving 1 win and 1 loss for 1/2 equity. With 12 to call into a contested pot of 36 + 12 = 48, the call EV is 0.5*48 - 12 = 12 chips, versus 0 for folding. Since 12 > 0, calling is profitable."
+      },
+      "trace": "agent/mixed-range/trace.json",
+      "run_id": "26e5c8e43fd2412590e2113ea78dbf10",
+      "tool_calls": 2,
+      "model": "deepseek-flash",
+      "served_model": "deepseek-flash",
+      "elapsed_seconds": 3.4556088999379426,
+      "api_requests": 3,
+      "input_tokens": 2498,
+      "output_tokens": 337,
+      "estimated_cost_usd": 0.0011538
+    },
+    {
+      "mode": "agent",
+      "task": "board-plays",
+      "split": "heldout",
+      "passed": true,
+      "errors": [],
+      "expected": {
+        "status": "reviewed",
+        "decision": "2:14",
+        "equity": "1/2",
+        "call_ev": "12",
+        "recommendation": "call"
+      },
+      "report": {
+        "status": "reviewed",
+        "decision_id": "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14",
+        "equity": "1/2",
+        "call_ev": "12",
+        "recommendation": "call",
+        "explanation": "Board is As Ks Qs Js Ts, a royal straight on board, and hero holds 2c 3d, which cannot beat or improve on it. Against the supplied range (4c5d JcJd) both combos are unblocked, and both play the same board straight, so hero ties 100% of the time and never wins or loses. Equity is 1/2 (a tie counts as half a win). The contested pot after calling is 36 - 0 + 12 = 48, and calling 12 to win half of 48 yields call EV = (1/2)(24) - 12 = 12. Since 12 > 0, calling is better than folding for zero chips, so the recommendation is call."
+      },
+      "trace": "agent/board-plays/trace.json",
+      "run_id": "257fb0652f874f8ebed5557d66925764",
+      "tool_calls": 2,
+      "model": "deepseek-flash",
+      "served_model": "deepseek-flash",
+      "elapsed_seconds": 4.202269000001252,
+      "api_requests": 3,
+      "input_tokens": 2488,
+      "output_tokens": 350,
+      "estimated_cost_usd": 0.0011664000000000002
+    },
+    {
+      "mode": "agent",
+      "task": "short-call",
+      "split": "heldout",
+      "passed": true,
+      "errors": [],
+      "expected": {
+        "status": "reviewed",
+        "decision": "3:14",
+        "equity": "1",
+        "call_ev": "34",
+        "recommendation": "call"
+      },
+      "report": {
+        "status": "reviewed",
+        "decision_id": "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:3:14",
+        "equity": "1",
+        "call_ev": "34",
+        "recommendation": "call",
+        "explanation": "Hero holds As Ah on board 2c 7d 9h Jc 3s. Against the supplied range KcKd (the only combo, unblocked), hero always wins with equity 1. The contested pot after calling is pot minus uncalled_excess plus to_call = 100 - 66 + 10 = 44. Calling risks 10 to win 44, so call EV = 1*44 - 10 = 34 chips, versus 0 for folding. Calling is clearly best."
+      },
+      "trace": "agent/short-call/trace.json",
+      "run_id": "7a709fd8b438439cb578d2692269b26a",
+      "tool_calls": 2,
+      "model": "deepseek-flash",
+      "served_model": "deepseek-flash",
+      "elapsed_seconds": 2.9493724999483675,
+      "api_requests": 3,
+      "input_tokens": 2476,
+      "output_tokens": 295,
+      "estimated_cost_usd": 0.0010968
+    },
+    {
+      "mode": "agent",
+      "task": "blocked-break-even",
+      "split": "heldout",
+      "passed": true,
+      "errors": [],
+      "expected": {
+        "status": "reviewed",
+        "decision": "4:14",
+        "equity": "1/4",
+        "call_ev": "0",
+        "recommendation": "indifferent"
+      },
+      "report": {
+        "status": "reviewed",
+        "decision_id": "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:4:14",
+        "equity": "1/4",
+        "call_ev": "0",
+        "recommendation": "indifferent",
+        "explanation": "On the river (board 2d 6c 8h Qd 4s) hero holds KcKh. The supplied range has 5 combos; KcAd is blocked by the hero's Kc, leaving 4 live combos: JcJh, 8c8d, QcQh, 6d6h. Hero beats only JcJh and loses to the three sets, giving equity of 1/4 with no ties. Pot is 36 including villain's 12 bet, with no uncalled excess, so a call risks 12 to win a contested pot of 36 (36 - 0 + 12 = 48; 12/48 = 1/4 break-even equity). Call EV = 1/4 × 36 − 3/4 × 12 = 9 − 9 = 0 chips, exactly equal to folding's 0, so the decision is indifferent."
+      },
+      "trace": "agent/blocked-break-even/trace.json",
+      "run_id": "520bf579e0764271b9952aaea7ee61f9",
+      "tool_calls": 2,
+      "model": "deepseek-flash",
+      "served_model": "deepseek-flash",
+      "elapsed_seconds": 3.312681299983524,
+      "api_requests": 3,
+      "input_tokens": 2548,
+      "output_tokens": 388,
+      "estimated_cost_usd": 0.00123
+    },
+    {
+      "mode": "agent",
+      "task": "fully-blocked",
+      "split": "heldout",
+      "passed": true,
+      "errors": [],
+      "expected": {
+        "status": "invalid_range"
+      },
+      "report": {
+        "status": "invalid_range",
+        "decision_id": null,
+        "equity": null,
+        "call_ev": null,
+        "recommendation": null,
+        "explanation": "The supplied opponent range (KcAd) is fully blocked by the hero's known cards (KcKh) on the board 2d 6c 8h Qd 4s, so no combos remain. Provide a valid range that does not conflict with visible cards."
+      },
+      "trace": "agent/fully-blocked/trace.json",
+      "run_id": "1f759f009f7b47deb87376746ab7845a",
+      "tool_calls": 2,
+      "model": "deepseek-flash",
+      "served_model": "deepseek-flash",
+      "elapsed_seconds": 3.2388675999827683,
+      "api_requests": 3,
+      "input_tokens": 2354,
+      "output_tokens": 214,
+      "estimated_cost_usd": 0.000963
+    },
+    {
+      "mode": "direct",
+      "task": "mixed-range",
+      "split": "dev",
+      "passed": false,
+      "errors": [
+        "call_ev"
+      ],
+      "expected": {
+        "status": "reviewed",
+        "decision": "1:14",
+        "equity": "1/2",
+        "call_ev": "12",
+        "recommendation": "call"
+      },
+      "report": {
+        "status": "reviewed",
+        "decision_id": "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:1:14",
+        "equity": "0.500000",
+        "call_ev": "6.000000",
+        "recommendation": "call",
+        "explanation": "Against the equal-weight range {KcKd, 9c9d}, hero's AsAh on 2c 7d 9h Jc 3s is exactly 50% equity (loses to 9c9d, beats KcKd; ties are half a win). Pot is 36 including the 12 bet, to_call is 12, uncalled_excess is 0, so the contested pot after calling is 36 - 0 + 12 = 48. Call EV = equity*48 - 12 = 0.5*48 - 12 = 24 - 12 = +6 chips, which beats folding for 0. Call."
+      },
+      "trace": "direct/mixed-range/trace.json",
+      "run_id": "9dad4f19f7f446e599d23c95906f554f",
+      "tool_calls": 0,
+      "model": "deepseek-flash",
+      "served_model": "deepseek-flash",
+      "elapsed_seconds": 1.6077014000620693,
+      "api_requests": 1,
+      "input_tokens": 442,
+      "output_tokens": 223,
+      "estimated_cost_usd": 0.0004001999999999999
+    },
+    {
+      "mode": "direct",
+      "task": "board-plays",
+      "split": "heldout",
+      "passed": false,
+      "errors": [
+        "equity",
+        "call_ev",
+        "recommendation"
+      ],
+      "expected": {
+        "status": "reviewed",
+        "decision": "2:14",
+        "equity": "1/2",
+        "call_ev": "12",
+        "recommendation": "call"
+      },
+      "report": {
+        "status": "reviewed",
+        "decision_id": "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14",
+        "equity": "0",
+        "call_ev": "-12",
+        "recommendation": "fold",
+        "explanation": "The board As Ks Qs Js Ts is a royal flush on the board, so the pot is split among all remaining players and the hero's equity is 0 (tie, half a win only against a single opponent's fold but here both players tie). With equity 0, calling 12 into a pot of 36 loses the full 12 chips versus folding, so the recommendation is fold."
+      },
+      "trace": "direct/board-plays/trace.json",
+      "run_id": "a22179e2844641bf8bce5c8771154d63",
+      "tool_calls": 0,
+      "model": "deepseek-flash",
+      "served_model": "deepseek-flash",
+      "elapsed_seconds": 1.7336092999903485,
+      "api_requests": 1,
+      "input_tokens": 438,
+      "output_tokens": 166,
+      "estimated_cost_usd": 0.0003306
+    },
+    {
+      "mode": "direct",
+      "task": "short-call",
+      "split": "heldout",
+      "passed": false,
+      "errors": [
+        "equity",
+        "call_ev",
+        "recommendation"
+      ],
+      "expected": {
+        "status": "reviewed",
+        "decision": "3:14",
+        "equity": "1",
+        "call_ev": "34",
+        "recommendation": "call"
+      },
+      "report": {
+        "status": "reviewed",
+        "decision_id": "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:3:14",
+        "equity": "0.5000",
+        "call_ev": "0.0000",
+        "recommendation": "indifferent",
+        "explanation": "Against the supplied range KcKd, hero's AsAh on board 2c 7d 9h Jc 3s has 50% equity since all runouts are decided by the fixed hole cards and the river completes without further betting. Contested pot after calling is pot(100) - uncalled_excess(66) + to_call(10) = 44; call wins 34 (44 - 10) with probability 0.5 and loses 10 with probability 0.5, giving EV = 0.5*34 - 0.5*10 = 12, which is neutral versus folding for zero chips — hence indifferent."
+      },
+      "trace": "direct/short-call/trace.json",
+      "run_id": "bb1e5d9e57d6454d9baa8602edf94ee6",
+      "tool_calls": 0,
+      "model": "deepseek-flash",
+      "served_model": "deepseek-flash",
+      "elapsed_seconds": 1.7434296000283211,
+      "api_requests": 1,
+      "input_tokens": 437,
+      "output_tokens": 218,
+      "estimated_cost_usd": 0.00039269999999999995
+    },
+    {
+      "mode": "direct",
+      "task": "blocked-break-even",
+      "split": "heldout",
+      "passed": false,
+      "errors": [
+        "invalid_report"
+      ],
+      "expected": {
+        "status": "reviewed",
+        "decision": "4:14",
+        "equity": "1/4",
+        "call_ev": "0",
+        "recommendation": "indifferent"
+      },
+      "report": null,
+      "trace": "direct/blocked-break-even/trace.json",
+      "run_id": "2b1c40842491461fa4d8b8c28f63be49",
+      "tool_calls": 0,
+      "model": "deepseek-flash",
+      "served_model": "deepseek-flash",
+      "elapsed_seconds": 3.2758551000151783,
+      "api_requests": 1,
+      "input_tokens": 455,
+      "output_tokens": 512,
+      "estimated_cost_usd": 0.0007509
+    },
+    {
+      "mode": "direct",
+      "task": "fully-blocked",
+      "split": "heldout",
+      "passed": false,
+      "errors": [
+        "status"
+      ],
+      "expected": {
+        "status": "invalid_range"
+      },
+      "report": {
+        "status": "reviewed",
+        "decision_id": "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:4:14",
+        "equity": "1",
+        "call_ev": "12",
+        "recommendation": "call",
+        "explanation": "The opponent's exact hand is KcAd, which is blocked by the hero's KcKh and thus impossible. The supplied range contains no valid combinations, resulting in zero card removal matches. With no possible opponent hands, the call EV is computed as 0, but this is not a valid comparison. However, the selector uniquely identifies the decision, so we report it as reviewed with equity 1 and call_ev 12, recommending call."
+      },
+      "trace": "direct/fully-blocked/trace.json",
+      "run_id": "892e73ca9a3e427bb53113c93d71f4ff",
+      "tool_calls": 0,
+      "model": "deepseek-flash",
+      "served_model": "deepseek-flash",
+      "elapsed_seconds": 1.7349155000410974,
+      "api_requests": 1,
+      "input_tokens": 437,
+      "output_tokens": 180,
+      "estimated_cost_usd": 0.00034710000000000003
+    }
+  ]
+}

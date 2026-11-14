@@ -1,0 +1,81 @@
+{
+  "run_id": "bb1e5d9e57d6454d9baa8602edf94ee6",
+  "status": "report_ready",
+  "report": {
+    "status": "reviewed",
+    "decision_id": "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:3:14",
+    "equity": "0.5000",
+    "call_ev": "0.0000",
+    "recommendation": "indifferent",
+    "explanation": "Against the supplied range KcKd, hero's AsAh on board 2c 7d 9h Jc 3s has 50% equity since all runouts are decided by the fixed hole cards and the river completes without further betting. Contested pot after calling is pot(100) - uncalled_excess(66) + to_call(10) = 44; call wins 34 (44 - 10) with probability 0.5 and loses 10 with probability 0.5, giving EV = 0.5*34 - 0.5*10 = 12, which is neutral versus folding for zero chips — hence indifferent."
+  },
+  "request": {
+    "selector": {
+      "hand_no": 3
+    },
+    "opponent_range": "KcKd",
+    "candidate_decisions": [
+      {
+        "decision_id": "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:3:14",
+        "snapshot": {
+          "actor": "p2",
+          "board": [
+            "2c",
+            "7d",
+            "9h",
+            "Jc",
+            "3s"
+          ],
+          "hole_cards": [
+            "As",
+            "Ah"
+          ],
+          "pot": 100,
+          "to_call": 10,
+          "stacks": {
+            "p1": 12,
+            "p2": 10
+          },
+          "uncalled_excess": 66
+        }
+      }
+    ]
+  },
+  "model": "deepseek-flash",
+  "served_model": "deepseek-flash",
+  "tools": [],
+  "events": [
+    {
+      "type": "model",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Review a recorded heads-up river call using the supplied selector and equal-weight opponent range.\nIf the range is absent, ask for it. If there are zero matches, report no_match. If there are multiple matches, ask for the decision ID.\nIf the calculation returns a status and explanation instead of a result, use that status and explain the issue.\nFor a reviewed decision, compare the call EV to folding for zero chips and explain the result under the supplied range.\nThe pot includes the current bet. The contested pot after calling is pot minus uncalled_excess plus to_call.\nUse the hero's known cards and public board to discard blocked combinations. A tie is half a win for equity.\nReturn a JSON object with status, decision_id, equity, call_ev, recommendation, and explanation.\nStatus is reviewed, needs_range, no_match, ambiguous, invalid_range, needs_import, or needs_cards. For reviewed, copy the exact decision ID and\ngive equity and call_ev as fraction or integer strings and recommendation as call, fold, or indifferent.\nFor the other statuses, use null for the decision ID, numbers, and recommendation, and explain what is needed.\nUse the supplied candidate decisions to compute the numeric result."
+        },
+        {
+          "role": "user",
+          "content": "{\"selector\": {\"hand_no\": 3}, \"opponent_range\": \"KcKd\", \"candidate_decisions\": [{\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:3:14\", \"snapshot\": {\"actor\": \"p2\", \"board\": [\"2c\", \"7d\", \"9h\", \"Jc\", \"3s\"], \"hole_cards\": [\"As\", \"Ah\"], \"pot\": 100, \"to_call\": 10, \"stacks\": {\"p1\": 12, \"p2\": 10}, \"uncalled_excess\": 66}}]}"
+        }
+      ],
+      "response": {
+        "role": "assistant",
+        "content": "{\"status\":\"reviewed\",\"decision_id\":\"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:3:14\",\"equity\":\"0.5000\",\"call_ev\":\"0.0000\",\"recommendation\":\"indifferent\",\"explanation\":\"Against the supplied range KcKd, hero's AsAh on board 2c 7d 9h Jc 3s has 50% equity since all runouts are decided by the fixed hole cards and the river completes without further betting. Contested pot after calling is pot(100) - uncalled_excess(66) + to_call(10) = 44; call wins 34 (44 - 10) with probability 0.5 and loses 10 with probability 0.5, giving EV = 0.5*34 - 0.5*10 = 12, which is neutral versus folding for zero chips — hence indifferent.\"}"
+      },
+      "input_tokens": 437,
+      "output_tokens": 218,
+      "elapsed_seconds": 1.743348199990578
+    }
+  ],
+  "elapsed_seconds": 1.7434296000283211,
+  "api_requests": 1,
+  "input_tokens": 437,
+  "output_tokens": 218,
+  "estimated_cost_usd": 0.00039269999999999995,
+  "pricing": {
+    "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "input_per_million": 0.3,
+    "output_per_million": 1.2,
+    "currency": "USD",
+    "checked_on": "2026-11-14"
+  }
+}

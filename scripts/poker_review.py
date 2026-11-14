@@ -208,19 +208,48 @@ def parse_report(raw, events, with_tools):
         if report["recommendation"] != choice:
             raise ValueError("The recommendation must match the call EV.")
         if with_tools:
-            results = (
-                json.loads(event["result"]) for event in events
+            calculations = (
+                (event["call_id"], json.loads(event["result"])) for event in events
                 if event.get("name") == CalculateCallEV.name and event["result"].startswith("{")
             )
-            if not any(
-                item.get("decision_id") == report["decision_id"]
-                and Fraction(item["equity"]) == equity and Fraction(item["call_ev"]) == ev
-                for item in results if "decision_id" in item
-            ):
+            for call_id, item in calculations:
+                if (
+                    item.get("decision_id") == report["decision_id"]
+                    and Fraction(item["equity"]) == equity and Fraction(item["call_ev"]) == ev
+                ):
+                    report["evidence"] = {"call_id": call_id, **item}
+                    break
+            else:
                 raise ValueError("The decision and values must match the calculation tool result.")
     elif any(report[key] is not None for key in ("decision_id", "equity", "call_ev", "recommendation")):
         raise ValueError("An incomplete review must leave the decision and numeric fields empty.")
     return report
+
+
+def write_report(output, result):
+    report = result["report"]
+    lines = ["# River call review", "", f"Run: {result['run_id']}", "", f"Status: {result['status']}"]
+    if report is not None:
+        lines.extend(("", f"Outcome: {report['status']}"))
+        if report["status"] == "reviewed":
+            lines.extend((
+                "", f"Decision: {report['decision_id']}", f"Equity: {report['equity']}",
+                f"Call EV: {report['call_ev']} chips", f"Recommendation: {report['recommendation']}",
+            ))
+            calculation = report.get("evidence")
+            if calculation is not None:
+                lines.extend((
+                    "", "## Tool evidence", "", f"Call ID: {calculation['call_id']}",
+                    f"Range: {calculation['range']}", f"Playable combinations: {calculation['combos']}",
+                    f"Blocked combinations: {calculation['blocked']}",
+                    f"Wins / ties / losses: {calculation['wins']} / {calculation['ties']} / {calculation['losses']}",
+                    f"Pot: {calculation['pot']}", f"Uncalled amount: {calculation['uncalled_excess']}",
+                    f"Call cost: {calculation['to_call']}", f"Break-even equity: {calculation['break_even_equity']}",
+                ))
+        if "evidence" not in report:
+            lines.extend(("", "## Model explanation", "", report["explanation"]))
+    lines.extend(("", "[Execution trace](trace.json)"))
+    (output / "report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 
 def review(database, selector, opponent_range, output, model, *, with_tools=True):
@@ -274,6 +303,7 @@ def review(database, selector, opponent_range, output, model, *, with_tools=True
     }
     for name, data in (("report", result), ("trace", trace)):
         (output / f"{name}.json").write_text(json.dumps(data, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    write_report(output, result)
     return trace
 
 

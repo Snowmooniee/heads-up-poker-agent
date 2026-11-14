@@ -1,0 +1,220 @@
+{
+  "run_id": "257fb0652f874f8ebed5557d66925764",
+  "status": "report_ready",
+  "report": {
+    "status": "reviewed",
+    "decision_id": "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14",
+    "equity": "1/2",
+    "call_ev": "12",
+    "recommendation": "call",
+    "explanation": "Board is As Ks Qs Js Ts, a royal straight on board, and hero holds 2c 3d, which cannot beat or improve on it. Against the supplied range (4c5d JcJd) both combos are unblocked, and both play the same board straight, so hero ties 100% of the time and never wins or loses. Equity is 1/2 (a tie counts as half a win). The contested pot after calling is 36 - 0 + 12 = 48, and calling 12 to win half of 48 yields call EV = (1/2)(24) - 12 = 12. Since 12 > 0, calling is better than folding for zero chips, so the recommendation is call."
+  },
+  "request": {
+    "selector": {
+      "hand_no": 2
+    },
+    "opponent_range": "4c5d JcJd"
+  },
+  "model": "deepseek-flash",
+  "served_model": "deepseek-flash",
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "find_river_calls",
+        "description": "Look up recorded river calls for this review's selector and return their IDs and pre-action snapshots.",
+        "parameters": {
+          "type": "object",
+          "properties": {}
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "calculate_call_ev",
+        "description": "Calculate exact equity and call EV for a decision returned by find_river_calls, using the supplied range.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "decision_id": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "decision_id"
+          ]
+        }
+      }
+    }
+  ],
+  "events": [
+    {
+      "type": "model",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Review a recorded heads-up river call using the supplied selector and equal-weight opponent range.\nIf the range is absent, ask for it. If there are zero matches, report no_match. If there are multiple matches, ask for the decision ID.\nIf the calculation returns a status and explanation instead of a result, use that status and explain the issue.\nFor a reviewed decision, compare the call EV to folding for zero chips and explain the result under the supplied range.\nThe pot includes the current bet. The contested pot after calling is pot minus uncalled_excess plus to_call.\nUse the hero's known cards and public board to discard blocked combinations. A tie is half a win for equity.\nReturn a JSON object with status, decision_id, equity, call_ev, recommendation, and explanation.\nStatus is reviewed, needs_range, no_match, ambiguous, invalid_range, needs_import, or needs_cards. For reviewed, copy the exact decision ID and\ngive equity and call_ev as fraction or integer strings and recommendation as call, fold, or indifferent.\nFor the other statuses, use null for the decision ID, numbers, and recommendation, and explain what is needed.\nFind the recorded call with find_river_calls. Use calculate_call_ev for the numeric result."
+        },
+        {
+          "role": "user",
+          "content": "{\"selector\": {\"hand_no\": 2}, \"opponent_range\": \"4c5d JcJd\"}"
+        }
+      ],
+      "response": {
+        "role": "assistant",
+        "content": null,
+        "tool_calls": [
+          {
+            "id": "call_00_uOAckTJz48HB0I5sqaYu5068",
+            "type": "function",
+            "function": {
+              "name": "find_river_calls",
+              "arguments": "{}"
+            }
+          }
+        ]
+      },
+      "input_tokens": 638,
+      "output_tokens": 24,
+      "elapsed_seconds": 0.9458313999930397
+    },
+    {
+      "type": "tool",
+      "call_id": "call_00_uOAckTJz48HB0I5sqaYu5068",
+      "name": "find_river_calls",
+      "arguments": {},
+      "result": "[{\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14\", \"snapshot\": {\"actor\": \"p2\", \"board\": [\"As\", \"Ks\", \"Qs\", \"Js\", \"Ts\"], \"hole_cards\": [\"2c\", \"3d\"], \"pot\": 36, \"to_call\": 12, \"stacks\": {\"p1\": 76, \"p2\": 88}, \"uncalled_excess\": 0}}]",
+      "elapsed_seconds": 0.0019602999091148376
+    },
+    {
+      "type": "model",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Review a recorded heads-up river call using the supplied selector and equal-weight opponent range.\nIf the range is absent, ask for it. If there are zero matches, report no_match. If there are multiple matches, ask for the decision ID.\nIf the calculation returns a status and explanation instead of a result, use that status and explain the issue.\nFor a reviewed decision, compare the call EV to folding for zero chips and explain the result under the supplied range.\nThe pot includes the current bet. The contested pot after calling is pot minus uncalled_excess plus to_call.\nUse the hero's known cards and public board to discard blocked combinations. A tie is half a win for equity.\nReturn a JSON object with status, decision_id, equity, call_ev, recommendation, and explanation.\nStatus is reviewed, needs_range, no_match, ambiguous, invalid_range, needs_import, or needs_cards. For reviewed, copy the exact decision ID and\ngive equity and call_ev as fraction or integer strings and recommendation as call, fold, or indifferent.\nFor the other statuses, use null for the decision ID, numbers, and recommendation, and explain what is needed.\nFind the recorded call with find_river_calls. Use calculate_call_ev for the numeric result."
+        },
+        {
+          "role": "user",
+          "content": "{\"selector\": {\"hand_no\": 2}, \"opponent_range\": \"4c5d JcJd\"}"
+        },
+        {
+          "role": "assistant",
+          "content": null,
+          "tool_calls": [
+            {
+              "id": "call_00_uOAckTJz48HB0I5sqaYu5068",
+              "type": "function",
+              "function": {
+                "name": "find_river_calls",
+                "arguments": "{}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_uOAckTJz48HB0I5sqaYu5068",
+          "content": "[{\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14\", \"snapshot\": {\"actor\": \"p2\", \"board\": [\"As\", \"Ks\", \"Qs\", \"Js\", \"Ts\"], \"hole_cards\": [\"2c\", \"3d\"], \"pot\": 36, \"to_call\": 12, \"stacks\": {\"p1\": 76, \"p2\": 88}, \"uncalled_excess\": 0}}]"
+        }
+      ],
+      "response": {
+        "role": "assistant",
+        "content": null,
+        "tool_calls": [
+          {
+            "id": "call_00_qCU3LWeHNblgceTTtLoV3062",
+            "type": "function",
+            "function": {
+              "name": "calculate_call_ev",
+              "arguments": "{\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14\"}"
+            }
+          }
+        ]
+      },
+      "input_tokens": 803,
+      "output_tokens": 79,
+      "elapsed_seconds": 1.2257769000716507
+    },
+    {
+      "type": "tool",
+      "call_id": "call_00_qCU3LWeHNblgceTTtLoV3062",
+      "name": "calculate_call_ev",
+      "arguments": {
+        "decision_id": "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14"
+      },
+      "result": "{\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14\", \"range\": \"4c5d JcJd\", \"combos\": 2, \"blocked\": 0, \"wins\": 0, \"ties\": 2, \"losses\": 0, \"equity\": \"1/2\", \"call_ev\": \"12\", \"fold_ev\": \"0\", \"break_even_equity\": \"1/4\", \"pot\": \"36\", \"to_call\": \"12\", \"uncalled_excess\": \"0\"}",
+      "elapsed_seconds": 0.0005769999697804451
+    },
+    {
+      "type": "model",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Review a recorded heads-up river call using the supplied selector and equal-weight opponent range.\nIf the range is absent, ask for it. If there are zero matches, report no_match. If there are multiple matches, ask for the decision ID.\nIf the calculation returns a status and explanation instead of a result, use that status and explain the issue.\nFor a reviewed decision, compare the call EV to folding for zero chips and explain the result under the supplied range.\nThe pot includes the current bet. The contested pot after calling is pot minus uncalled_excess plus to_call.\nUse the hero's known cards and public board to discard blocked combinations. A tie is half a win for equity.\nReturn a JSON object with status, decision_id, equity, call_ev, recommendation, and explanation.\nStatus is reviewed, needs_range, no_match, ambiguous, invalid_range, needs_import, or needs_cards. For reviewed, copy the exact decision ID and\ngive equity and call_ev as fraction or integer strings and recommendation as call, fold, or indifferent.\nFor the other statuses, use null for the decision ID, numbers, and recommendation, and explain what is needed.\nFind the recorded call with find_river_calls. Use calculate_call_ev for the numeric result."
+        },
+        {
+          "role": "user",
+          "content": "{\"selector\": {\"hand_no\": 2}, \"opponent_range\": \"4c5d JcJd\"}"
+        },
+        {
+          "role": "assistant",
+          "content": null,
+          "tool_calls": [
+            {
+              "id": "call_00_uOAckTJz48HB0I5sqaYu5068",
+              "type": "function",
+              "function": {
+                "name": "find_river_calls",
+                "arguments": "{}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_uOAckTJz48HB0I5sqaYu5068",
+          "content": "[{\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14\", \"snapshot\": {\"actor\": \"p2\", \"board\": [\"As\", \"Ks\", \"Qs\", \"Js\", \"Ts\"], \"hole_cards\": [\"2c\", \"3d\"], \"pot\": 36, \"to_call\": 12, \"stacks\": {\"p1\": 76, \"p2\": 88}, \"uncalled_excess\": 0}}]"
+        },
+        {
+          "role": "assistant",
+          "content": null,
+          "tool_calls": [
+            {
+              "id": "call_00_qCU3LWeHNblgceTTtLoV3062",
+              "type": "function",
+              "function": {
+                "name": "calculate_call_ev",
+                "arguments": "{\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call_00_qCU3LWeHNblgceTTtLoV3062",
+          "content": "{\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14\", \"range\": \"4c5d JcJd\", \"combos\": 2, \"blocked\": 0, \"wins\": 0, \"ties\": 2, \"losses\": 0, \"equity\": \"1/2\", \"call_ev\": \"12\", \"fold_ev\": \"0\", \"break_even_equity\": \"1/4\", \"pot\": \"36\", \"to_call\": \"12\", \"uncalled_excess\": \"0\"}"
+        }
+      ],
+      "response": {
+        "role": "assistant",
+        "content": "{\"status\": \"reviewed\", \"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14\", \"equity\": \"1/2\", \"call_ev\": \"12\", \"recommendation\": \"call\", \"explanation\": \"Board is As Ks Qs Js Ts, a royal straight on board, and hero holds 2c 3d, which cannot beat or improve on it. Against the supplied range (4c5d JcJd) both combos are unblocked, and both play the same board straight, so hero ties 100% of the time and never wins or loses. Equity is 1/2 (a tie counts as half a win). The contested pot after calling is 36 - 0 + 12 = 48, and calling 12 to win half of 48 yields call EV = (1/2)(24) - 12 = 12. Since 12 > 0, calling is better than folding for zero chips, so the recommendation is call.\"}"
+      },
+      "input_tokens": 1047,
+      "output_tokens": 247,
+      "elapsed_seconds": 2.0278200999600813
+    }
+  ],
+  "elapsed_seconds": 4.202269000001252,
+  "api_requests": 3,
+  "input_tokens": 2488,
+  "output_tokens": 350,
+  "estimated_cost_usd": 0.0011664000000000002,
+  "pricing": {
+    "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "input_per_million": 0.3,
+    "output_per_million": 1.2,
+    "currency": "USD",
+    "checked_on": "2026-11-14"
+  }
+}

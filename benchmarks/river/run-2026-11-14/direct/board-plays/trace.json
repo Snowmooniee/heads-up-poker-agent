@@ -1,0 +1,81 @@
+{
+  "run_id": "a22179e2844641bf8bce5c8771154d63",
+  "status": "report_ready",
+  "report": {
+    "status": "reviewed",
+    "decision_id": "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14",
+    "equity": "0",
+    "call_ev": "-12",
+    "recommendation": "fold",
+    "explanation": "The board As Ks Qs Js Ts is a royal flush on the board, so the pot is split among all remaining players and the hero's equity is 0 (tie, half a win only against a single opponent's fold but here both players tie). With equity 0, calling 12 into a pot of 36 loses the full 12 chips versus folding, so the recommendation is fold."
+  },
+  "request": {
+    "selector": {
+      "hand_no": 2
+    },
+    "opponent_range": "4c5d JcJd",
+    "candidate_decisions": [
+      {
+        "decision_id": "7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14",
+        "snapshot": {
+          "actor": "p2",
+          "board": [
+            "As",
+            "Ks",
+            "Qs",
+            "Js",
+            "Ts"
+          ],
+          "hole_cards": [
+            "2c",
+            "3d"
+          ],
+          "pot": 36,
+          "to_call": 12,
+          "stacks": {
+            "p1": 76,
+            "p2": 88
+          },
+          "uncalled_excess": 0
+        }
+      }
+    ]
+  },
+  "model": "deepseek-flash",
+  "served_model": "deepseek-flash",
+  "tools": [],
+  "events": [
+    {
+      "type": "model",
+      "messages": [
+        {
+          "role": "system",
+          "content": "Review a recorded heads-up river call using the supplied selector and equal-weight opponent range.\nIf the range is absent, ask for it. If there are zero matches, report no_match. If there are multiple matches, ask for the decision ID.\nIf the calculation returns a status and explanation instead of a result, use that status and explain the issue.\nFor a reviewed decision, compare the call EV to folding for zero chips and explain the result under the supplied range.\nThe pot includes the current bet. The contested pot after calling is pot minus uncalled_excess plus to_call.\nUse the hero's known cards and public board to discard blocked combinations. A tie is half a win for equity.\nReturn a JSON object with status, decision_id, equity, call_ev, recommendation, and explanation.\nStatus is reviewed, needs_range, no_match, ambiguous, invalid_range, needs_import, or needs_cards. For reviewed, copy the exact decision ID and\ngive equity and call_ev as fraction or integer strings and recommendation as call, fold, or indifferent.\nFor the other statuses, use null for the decision ID, numbers, and recommendation, and explain what is needed.\nUse the supplied candidate decisions to compute the numeric result."
+        },
+        {
+          "role": "user",
+          "content": "{\"selector\": {\"hand_no\": 2}, \"opponent_range\": \"4c5d JcJd\", \"candidate_decisions\": [{\"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14\", \"snapshot\": {\"actor\": \"p2\", \"board\": [\"As\", \"Ks\", \"Qs\", \"Js\", \"Ts\"], \"hole_cards\": [\"2c\", \"3d\"], \"pot\": 36, \"to_call\": 12, \"stacks\": {\"p1\": 76, \"p2\": 88}, \"uncalled_excess\": 0}}]}"
+        }
+      ],
+      "response": {
+        "role": "assistant",
+        "content": "{\"status\": \"reviewed\", \"decision_id\": \"7f330a054f3af8892366b11cb291b21c0bd982cd5391b96a317e7934f333bcee:2:14\", \"equity\": \"0\", \"call_ev\": \"-12\", \"recommendation\": \"fold\", \"explanation\": \"The board As Ks Qs Js Ts is a royal flush on the board, so the pot is split among all remaining players and the hero's equity is 0 (tie, half a win only against a single opponent's fold but here both players tie). With equity 0, calling 12 into a pot of 36 loses the full 12 chips versus folding, so the recommendation is fold.\"}"
+      },
+      "input_tokens": 438,
+      "output_tokens": 166,
+      "elapsed_seconds": 1.7335395000409335
+    }
+  ],
+  "elapsed_seconds": 1.7336092999903485,
+  "api_requests": 1,
+  "input_tokens": 438,
+  "output_tokens": 166,
+  "estimated_cost_usd": 0.0003306,
+  "pricing": {
+    "source": "https://api-docs.deepseek.com/quick_start/pricing/",
+    "input_per_million": 0.3,
+    "output_per_million": 1.2,
+    "currency": "USD",
+    "checked_on": "2026-11-14"
+  }
+}

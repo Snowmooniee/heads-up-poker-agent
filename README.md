@@ -1,12 +1,41 @@
 # Heads-up Poker Agent
 
-Play a fixed heads-up no-limit Hold'em hand or a scripted two-hand match, save the hand histories in Poker Hand History (PHH) format, and replay them to recover decisions and final stacks. Both players start with 100 chips, or 50 big blinds at 1/2.
+Review recorded heads-up no-limit Hold'em river decisions against a supplied opponent range. CoreCoder calls two tools to retrieve the decision from SQLite and calculate its exact equity and call EV with PokerKit.
 
-Run from the repository root with Python 3.11 or newer:
+## Run the review demo
+
+From a clean Linux or macOS checkout with Python 3.11 or newer:
+
+~~~sh
+python3 -m venv .venv
+.venv/bin/python -m pip install -e . pokerkit==0.7.7
+.venv/bin/python -m scripts.poker_eval .poker-agent/demo
+~~~
+
+On Windows PowerShell:
+
+~~~powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -e . pokerkit==0.7.7
+.\.venv\Scripts\python.exe -m scripts.poker_eval .poker-agent/demo
+~~~
+
+Open [the saved comparison](benchmarks/river/run-2026-11-14/README.md) for the DeepSeek results and traces. The offline demo uses scripted model responses to exercise CoreCoder's tool loop. It generates seven checked cases, including a report and trace at a path such as .poker-agent/demo/offline/mixed-range/. Each evaluation run takes a new output directory. The Ubuntu CI run publishes the reports, traces, and checks as the poker-review artifact.
+
+~~~sh
+.venv/bin/python -m scripts.poker_query benchmarks/river/decisions.phhs --save-to .poker-agent/review.sqlite3
+.venv/bin/python -m scripts.poker_review .poker-agent/review.sqlite3 --hand 1 --range 'KcKd 9c9d' --output .poker-agent/review
+~~~
+
+The selector accepts a hand number or the full decision ID. The review connects to SQLite in read-only mode. Its tools receive the selected decision's public board, acting player's cards, pot and call cost. The exact tool result, including the matched call ID, appears in report.md. Trace.json contains request messages, tool arguments, results, timings and model usage. Reproduce the tool and data checks with python -m scripts.check_poker_review.
+
+Set DEEPSEEK_API_KEY in the local environment and add --live to the review command to use DeepSeek Flash. Evaluation supports --mode compare and repeated --task arguments to select the cases.
+
+## Generate and inspect hand histories
+
+Play a fixed hand or a scripted two-hand match, save it in Poker Hand History (PHH) format, and replay it to recover decisions and final stacks. Both players start with 100 chips, or 50 big blinds at 1/2. With the project environment above, run:
 
 ```powershell
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install pokerkit==0.7.7
 .\.venv\Scripts\python.exe scripts/poker_demo.py .poker-agent/first-hand.phh
 ```
 
