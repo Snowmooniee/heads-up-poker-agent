@@ -14,7 +14,8 @@ def write_hands(db, hands):
         PRAGMA foreign_keys = ON;
         CREATE TABLE IF NOT EXISTS hands (
             hand_id TEXT PRIMARY KEY,
-            hand_no INTEGER NOT NULL
+            hand_no INTEGER NOT NULL,
+            players TEXT
         );
         CREATE TABLE IF NOT EXISTS decisions (
             decision_id TEXT PRIMARY KEY,
@@ -26,10 +27,14 @@ def write_hands(db, hands):
         );
     """)
     with db:
+        # Serialize schema changes and imports when two writers open an existing database together.
+        db.execute("BEGIN IMMEDIATE")
+        if "players" not in {column[1] for column in db.execute("PRAGMA table_info(hands)")}:
+            db.execute("ALTER TABLE hands ADD COLUMN players TEXT")
         db.executemany(
-            "INSERT INTO hands (hand_id, hand_no) VALUES (?, ?) "
-            "ON CONFLICT (hand_id) DO NOTHING",
-            ((hand["hand_id"], hand["hand_no"]) for hand in hands),
+            "INSERT INTO hands (hand_id, hand_no, players) VALUES (?, ?, ?) "
+            "ON CONFLICT (hand_id) DO UPDATE SET players = excluded.players",
+            ((hand["hand_id"], hand["hand_no"], json.dumps(hand["players"])) for hand in hands),
         )
         db.executemany(
             "INSERT INTO decisions (decision_id, hand_id, action_no, street, action, snapshot) "
@@ -49,16 +54,21 @@ def write_hands(db, hands):
         )
 
 
-def find_decisions(db, street, action, *, hand_no=None, decision_id=None):
-    rows = db.execute("""
+def find_decisions(db, street, action, *, hand_no=None, decision_id=None, player=None):
+    conditions = [
+        "d.street = :street", "d.action = :action", "(:hand_no IS NULL OR h.hand_no = :hand_no)",
+        "(:decision_id IS NULL OR d.decision_id = :decision_id)",
+    ]
+    if player is not None:
+        conditions.append("json_extract(h.players, '$.' || json_extract(d.snapshot, '$.actor')) = :player")
+    where = " AND ".join(conditions)
+    rows = db.execute(f"""
         SELECT h.hand_no, d.decision_id, d.action_no, d.street, d.action, d.snapshot
         FROM decisions AS d
         JOIN hands AS h ON d.hand_id = h.hand_id
-        WHERE d.street = :street AND d.action = :action
-          AND (:hand_no IS NULL OR h.hand_no = :hand_no)
-          AND (:decision_id IS NULL OR d.decision_id = :decision_id)
+        WHERE {where}
         ORDER BY h.hand_no, h.hand_id, d.action_no
-    """, {"street": street, "action": action, "hand_no": hand_no, "decision_id": decision_id})
+    """, {"street": street, "action": action, "hand_no": hand_no, "decision_id": decision_id, "player": player})
     matches = []
     for row in rows:
         result = dict(row)

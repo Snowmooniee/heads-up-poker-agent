@@ -2,6 +2,8 @@
 
 Review recorded heads-up no-limit Hold'em river decisions against a supplied opponent range. CoreCoder calls two tools to retrieve the decision from SQLite and calculate its exact equity and call EV with PokerKit.
 
+The [natural-language lookup benchmark](benchmarks/lookup/README.md) compares a keyword pipeline, direct DeepSeek answers and a CoreCoder agent on 28 labeled requests. It measures decision IDs, clarification and whether the system invents records.
+
 ## Run the review demo
 
 From a clean Linux or macOS checkout with Python 3.11 or newer:

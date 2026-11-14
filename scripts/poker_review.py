@@ -90,25 +90,30 @@ class CalculateCallEV(Tool):
 class DeepSeekModel:
     model = "deepseek-flash"
 
-    def __init__(self, api_key, max_requests=MAX_ROUNDS):
+    def __init__(self, api_key, max_requests=MAX_ROUNDS, *, max_output_tokens=MAX_OUTPUT_TOKENS, max_input_bytes=MAX_INPUT_BYTES):
         self.client = OpenAI(api_key=api_key, base_url="https://api.deepseek.com", max_retries=0, timeout=30)
         self.max_requests = max_requests
+        self.max_output_tokens = max_output_tokens
+        self.max_input_bytes = max_input_bytes
         self.api_requests = 0
         self.served_model = None
+        self.finish_reason = None
 
     def chat(self, messages, tools=None, **callbacks):
         params = {
-            "model": self.model, "messages": messages, "max_tokens": MAX_OUTPUT_TOKENS,
+            "model": self.model, "messages": messages, "max_tokens": self.max_output_tokens,
             "extra_body": {"thinking": {"type": "disabled"}}, "response_format": {"type": "json_object"},
         }
         if tools:
             params["tools"] = tools
-        if self.api_requests >= self.max_requests or len(json.dumps(params, ensure_ascii=False).encode("utf-8")) > MAX_INPUT_BYTES:
+        if self.api_requests >= self.max_requests or len(json.dumps(params).encode("utf-8")) > self.max_input_bytes:
             raise ValueError("The review request limit was reached.")
         self.api_requests += 1
         reply = self.client.chat.completions.create(**params)
         self.served_model = reply.model
-        message = reply.choices[0].message
+        choice = reply.choices[0]
+        message = choice.message
+        self.finish_reason = choice.finish_reason
         return LLMResponse(
             content=message.content or "",
             tool_calls=[
@@ -172,7 +177,10 @@ class RecordedModel:
         started = perf_counter()
         try:
             reply = self.model.chat(messages, tools=tools, **callbacks)
-            event.update(response=reply.message, input_tokens=reply.prompt_tokens, output_tokens=reply.completion_tokens)
+            event.update(
+                response=reply.message, input_tokens=reply.prompt_tokens, output_tokens=reply.completion_tokens,
+                finish_reason=getattr(self.model, "finish_reason", None),
+            )
             return reply
         except Exception as error:
             event["error"] = type(error).__name__
@@ -182,8 +190,8 @@ class RecordedModel:
 
 
 class ReviewAgent(Agent):
-    def __init__(self, model, tools, events, prompt):
-        super().__init__(RecordedModel(model, events), tools=tools, max_rounds=MAX_ROUNDS)
+    def __init__(self, model, tools, events, prompt, max_rounds=MAX_ROUNDS):
+        super().__init__(RecordedModel(model, events), tools=tools, max_rounds=max_rounds)
         self.events = events
         self._system = prompt
 

@@ -43,7 +43,10 @@ jobs:
           python -m scripts.check_poker_import
           python -m scripts.poker_eval "$RUNNER_TEMP/poker-review"
           python -m scripts.check_poker_review > "$RUNNER_TEMP/poker-review/security.json"
+          python -m scripts.check_poker_lookup
+          python -m scripts.poker_lookup_eval "$RUNNER_TEMP/poker-review/lookup"
           cat "$RUNNER_TEMP/poker-review/evaluation.md" >> "$GITHUB_STEP_SUMMARY"
+          cat "$RUNNER_TEMP/poker-review/lookup/evaluation.md" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload the poker review evidence
         if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
@@ -55,6 +58,9 @@ jobs:
             ${{ runner.temp }}/poker-review/evaluation.json
             ${{ runner.temp }}/poker-review/security.json
             ${{ runner.temp }}/poker-review/offline/
+            ${{ runner.temp }}/poker-review/lookup/evaluation.md
+            ${{ runner.temp }}/poker-review/lookup/evaluation.json
+            ${{ runner.temp }}/poker-review/lookup/keyword/
 
       - name: Compile
         run: python -m compileall -q corecoder tests

@@ -1,1 +1,3 @@
 benchmarks/river/decisions.phhs text eol=lf
+benchmarks/lookup/heldout.phhs text eol=lf
+benchmarks/lookup/tasks.json text eol=lf
