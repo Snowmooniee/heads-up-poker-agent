@@ -11,23 +11,34 @@ from pokerkit import Card, StandardHighHand, parse_range
 from .poker_query import get_snapshot, open_saved_database
 
 
+class RiverInputError(ValueError):
+    def __init__(self, status, message):
+        super().__init__(message)
+        self.status = status
+
+
 def river_call(snapshot, opponent_range):
     board = tuple(Card.parse(*snapshot["board"]))
     hole = tuple(Card.parse(*snapshot["hole_cards"]))
     known = set(board + hole)
     if len(board) != 5 or len(hole) != 2 or len(known) != 7 or any(card.unknown_status for card in known):
-        raise ValueError("River analysis requires five board cards and two known hole cards.")
+        raise RiverInputError("needs_cards", "River analysis requires five board cards and two known hole cards.")
     pot = Fraction(snapshot["pot"])
     to_call = Fraction(snapshot["to_call"])
     if not 0 < to_call <= pot:
-        raise ValueError("Select a river decision facing a bet.")
+        raise RiverInputError("not_facing_bet", "Select a river decision facing a bet.")
+    if "uncalled_excess" not in snapshot:
+        raise RiverInputError("needs_import", "Import the source PHH again to record the uncalled amount.")
 
-    combos = parse_range(opponent_range)
+    try:
+        combos = parse_range(opponent_range)
+    except ValueError as error:
+        raise RiverInputError("invalid_range", str(error)) from error
     if not combos or any(len(combo) != 2 or any(card.unknown_status for card in combo) for combo in combos):
-        raise ValueError("Supply a range such as KK, AKs, or KcKd 9c9d.")
+        raise RiverInputError("invalid_range", "Supply a range such as KK, AKs, or KcKd 9c9d.")
     available = [combo for combo in combos if combo.isdisjoint(known)]
     if not available:
-        raise ValueError("The visible cards block every combo in the range.")
+        raise RiverInputError("invalid_range", "The visible cards block every combo in the range.")
 
     hero = StandardHighHand.from_game(hole, board)
     opponents = [StandardHighHand.from_game(combo, board) for combo in available]
@@ -35,7 +46,7 @@ def river_call(snapshot, opponent_range):
     ties = sum(hero == opponent for opponent in opponents)
     equity = Fraction(2 * wins + ties, 2 * len(available))
     # In heads-up play, a short call leaves unmatched chips to be returned.
-    unmatched = Fraction(snapshot.get("uncalled_excess", 0))
+    unmatched = Fraction(snapshot["uncalled_excess"])
     contested_pot = pot - unmatched + to_call
     return {
         "range": opponent_range,

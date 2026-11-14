@@ -1,0 +1,35 @@
+[1]
+variant = 'NT'
+antes = [0, 0]
+blinds_or_straddles = [1, 2]
+min_bet = 2
+players = ['opponent', 'hero']
+starting_stacks = [100, 100]
+actions = ['d dh p1 KcKd', 'd dh p2 AsAh', 'p2 cbr 6', 'p1 cc', 'd db 2c7d9h', 'p1 cc', 'p2 cbr 6', 'p1 cc', 'd db Jc', 'p1 cc', 'p2 cc', 'd db 3s', 'p1 cbr 12', 'p2 cc', 'p1 sm -', 'p2 sm -']
+
+[2]
+variant = 'NT'
+antes = [0, 0]
+blinds_or_straddles = [1, 2]
+min_bet = 2
+players = ['opponent', 'hero']
+starting_stacks = [100, 100]
+actions = ['d dh p1 KcKd', 'd dh p2 2c3d', 'p2 cbr 6', 'p1 cc', 'd db AsKsQs', 'p1 cc', 'p2 cbr 6', 'p1 cc', 'd db Js', 'p1 cc', 'p2 cc', 'd db Ts', 'p1 cbr 12', 'p2 cc', 'p1 sm -', 'p2 sm -']
+
+[3]
+variant = 'NT'
+antes = [0, 0]
+blinds_or_straddles = [1, 2]
+min_bet = 2
+players = ['opponent', 'hero']
+starting_stacks = [100, 22]
+actions = ['d dh p1 KcKd', 'd dh p2 AsAh', 'p2 cbr 6', 'p1 cc', 'd db 2c7d9h', 'p1 cc', 'p2 cbr 6', 'p1 cc', 'd db Jc', 'p1 cc', 'p2 cc', 'd db 3s', 'p1 cbr 76', 'p2 cc', 'p1 sm -', 'p2 sm -']
+
+[4]
+variant = 'NT'
+antes = [0, 0]
+blinds_or_straddles = [1, 2]
+min_bet = 2
+players = ['opponent', 'hero']
+starting_stacks = [100, 100]
+actions = ['d dh p1 JcJh', 'd dh p2 KcKh', 'p2 cbr 6', 'p1 cc', 'd db 2d6c8h', 'p1 cc', 'p2 cbr 6', 'p1 cc', 'd db Qd', 'p1 cc', 'p2 cc', 'd db 4s', 'p1 cbr 12', 'p2 cc', 'p1 sm -', 'p2 sm -']

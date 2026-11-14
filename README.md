@@ -61,7 +61,7 @@ Calculate exact river equity and call EV for the saved decision with an equal-we
 .\.venv\Scripts\python.exe -m scripts.poker_equity $reviewDb $riverCalls[0].decision_id 'KcKd 9c9d'
 ```
 
-The first decision has two compatible combinations. The player wins against one and loses against the other, for equity of `1/2` and call EV of `12` chips. The calculation uses a heads-up, rake-free pot. Each compatible combination has equal weight and ties split the pot.
+The first decision has two compatible combinations. The player wins against one and loses against the other, for equity of `1/2` and call EV of `12` chips. The calculation uses a heads-up, rake-free pot. Each compatible combination has equal weight and ties split the pot. Run the save command above to populate the uncalled amount in databases created before river analysis.
 
 Run the import, query, and saved snapshot checks with `python -m scripts.check_poker_import` in the project environment.
 

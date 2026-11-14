@@ -33,7 +33,7 @@ def write_hands(db, hands):
         )
         db.executemany(
             "INSERT INTO decisions (decision_id, hand_id, action_no, street, action, snapshot) "
-            "VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT (decision_id) DO NOTHING",
+            "VALUES (?, ?, ?, ?, ?, ?) ON CONFLICT (decision_id) DO UPDATE SET snapshot = excluded.snapshot",
             (
                 (
                     decision["decision_id"],
@@ -49,14 +49,16 @@ def write_hands(db, hands):
         )
 
 
-def find_decisions(db, street, action):
+def find_decisions(db, street, action, *, hand_no=None, decision_id=None):
     rows = db.execute("""
         SELECT h.hand_no, d.decision_id, d.action_no, d.street, d.action, d.snapshot
         FROM decisions AS d
         JOIN hands AS h ON d.hand_id = h.hand_id
-        WHERE d.street = ? AND d.action = ?
+        WHERE d.street = :street AND d.action = :action
+          AND (:hand_no IS NULL OR h.hand_no = :hand_no)
+          AND (:decision_id IS NULL OR d.decision_id = :decision_id)
         ORDER BY h.hand_no, h.hand_id, d.action_no
-    """, (street, action))
+    """, {"street": street, "action": action, "hand_no": hand_no, "decision_id": decision_id})
     matches = []
     for row in rows:
         result = dict(row)

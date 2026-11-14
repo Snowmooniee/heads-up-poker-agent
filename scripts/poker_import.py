@@ -43,7 +43,10 @@ def normalize_hand(hand, source_id, hand_no):
         before = None
         if state.actor_index is not None:
             street = STREETS[state.street_index]
-            before = street, decision_snapshot(state, SEATS, include_uncalled=street == "river")
+            snapshot = decision_snapshot(state, SEATS)
+            if street == "river":
+                snapshot["uncalled_excess"] = max(state.bets) - state.bets[state.actor_index] - snapshot["to_call"]
+            before = street, snapshot
 
     return {
         "hand_id": hand_id,

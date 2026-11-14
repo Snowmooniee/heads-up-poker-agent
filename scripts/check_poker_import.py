@@ -56,6 +56,7 @@ def main():
         "pot": 36,
         "to_call": 12,
         "stacks": {"p1": 76, "p2": 88},
+        "uncalled_excess": 0,
     }
     assert one_hand["hands"][0]["decisions"][-1]["snapshot"] == first_call["snapshot"]
     assert second["decisions"][-1]["snapshot"]["to_call"] == 64
@@ -75,8 +76,8 @@ def main():
     short_snapshot = normalize_hand(short, "short", 1)["decisions"][-1]["snapshot"]
     assert (short_snapshot["pot"], short_snapshot["to_call"], short_snapshot["uncalled_excess"]) == (100, 10, 66)
     assert river_call(short_snapshot, "KcKd")["call_ev"] == "34"
-    tied = river_call({"board": ["As", "Ks", "Qs", "Js", "Ts"], "hole_cards": ["2c", "3d"], "pot": 30, "to_call": 10}, "4c5d")
-    assert (tied["ties"], tied["equity"], tied["call_ev"]) == (1, "1/2", "10")
+    tied = river_call(snapshot | {"board": ["As", "Ks", "Qs", "Js", "Ts"], "hole_cards": ["2c", "3d"]}, "4c5d")
+    assert (tied["ties"], tied["equity"], tied["call_ev"]) == (1, "1/2", "12")
     print("PHH import, SQLite, and exact river checks passed.")
 
 

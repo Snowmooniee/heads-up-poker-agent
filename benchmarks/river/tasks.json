@@ -1,0 +1,88 @@
+[
+  {
+    "id": "mixed-range",
+    "split": "dev",
+    "hand": 1,
+    "range": "KcKd 9c9d",
+    "expected": {
+      "status": "reviewed",
+      "decision": "1:14",
+      "equity": "1/2",
+      "call_ev": "12",
+      "recommendation": "call"
+    },
+    "reference": "AA beats KK and loses to three nines. With a pot of 36 and a call of 12, half of 48 minus 12 is 12."
+  },
+  {
+    "id": "missing-range",
+    "split": "dev",
+    "hand": 1,
+    "range": null,
+    "expected": {
+      "status": "needs_range"
+    },
+    "reference": "The request contains no opponent range."
+  },
+  {
+    "id": "missing-hand",
+    "split": "dev",
+    "hand": 9,
+    "range": "KcKd",
+    "expected": {
+      "status": "no_match"
+    },
+    "reference": "The PHHS file contains hands 1 to 4."
+  },
+  {
+    "id": "board-plays",
+    "split": "heldout",
+    "hand": 2,
+    "range": "4c5d JcJd",
+    "expected": {
+      "status": "reviewed",
+      "decision": "2:14",
+      "equity": "1/2",
+      "call_ev": "12",
+      "recommendation": "call"
+    },
+    "reference": "The board is a royal flush. Both combinations tie, so each player gets half of the final pot of 48."
+  },
+  {
+    "id": "short-call",
+    "split": "heldout",
+    "hand": 3,
+    "range": "KcKd",
+    "expected": {
+      "status": "reviewed",
+      "decision": "3:14",
+      "equity": "1",
+      "call_ev": "34",
+      "recommendation": "call"
+    },
+    "reference": "AA beats KK. Of the 76 bet, only 10 is matched. The contested pot is 24 plus 10 plus 10, so the net gain from calling is 34."
+  },
+  {
+    "id": "blocked-break-even",
+    "split": "heldout",
+    "hand": 4,
+    "range": "JcJh 8c8d QcQh 6d6h KcAd",
+    "expected": {
+      "status": "reviewed",
+      "decision": "4:14",
+      "equity": "1/4",
+      "call_ev": "0",
+      "recommendation": "indifferent"
+    },
+    "reference": "KcAd is blocked by KcKh. Of the four remaining hands, KK beats JJ and loses to the three sets. A quarter of 48 equals the call cost of 12."
+  },
+  {
+    "id": "fully-blocked",
+    "split": "heldout",
+    "hand": 4,
+    "range": "KcAd",
+    "expected": {
+      "status": "invalid_range"
+    },
+    "reference": "The only requested combination contains the acting player's Kc."
+  }
+]
